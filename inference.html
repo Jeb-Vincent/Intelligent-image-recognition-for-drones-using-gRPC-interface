@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YOLO ONNX 推理工具</title>
+    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.16.0/dist/ort.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a24;
+            --accent: #00ff88;
+            --accent-dim: #00ff8833;
+            --text-primary: #ffffff;
+            --text-secondary: #888899;
+            --border: #2a2a3a;
+            --danger: #ff4466;
+            --warning: #ffaa00;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', 'JetBrains Mono', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            background-image:
+                radial-gradient(ellipse at 20% 20%, #00ff8808 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, #0088ff08 0%, transparent 50%);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), #00aaff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .panel-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel-title::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-input-wrapper:hover {
+            border-color: var(--accent);
+            background: var(--accent-dim);
+        }
+
+        .file-input-wrapper input {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-input-wrapper .icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .file-input-wrapper .text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .file-input-wrapper .filename {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--accent);
+            margin-top: 10px;
+            word-break: break-all;
+        }
+
+        .slider-group {
+            margin-bottom: 20px;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .slider-value {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--border);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), #00cc6a);
+            color: var(--bg-primary);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px var(--accent-dim);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .canvas-placeholder {
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .canvas-placeholder .icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        #canvas {
+            max-width: 100%;
+            max-height: 600px;
+            display: none;
+        }
+
+        .status-bar {
+            margin-top: 20px;
+            padding: 16px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .status-item:last-child {
+            border-bottom: none;
+        }
+
+        .status-label {
+            color: var(--text-secondary);
+        }
+
+        .status-value {
+            color: var(--accent);
+        }
+
+        .detection-list {
+            margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .detection-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .detection-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+
+        .detection-name {
+            flex: 1;
+        }
+
+        .detection-conf {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent);
+        }
+
+        .loading {
+            position: absolute;
+            inset: 0;
+            background: rgba(10, 10, 15, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            z-index: 10;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .classes-input {
+            width: 100%;
+            padding: 12px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .classes-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .classes-input::placeholder {
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>YOLO ONNX 推理</h1>
+            <p class="subtitle">浏览器端目标检测 · 支持 YOLOv8/v11</p>
+        </header>
+
+        <div class="main-grid">
+            <aside class="sidebar">
+                <div class="panel">
+                    <div class="panel-title">模型配置</div>
+
+                    <div class="form-group">
+                        <label>选择 ONNX 模型</label>
+                        <div class="file-input-wrapper" id="modelWrapper">
+                            <div class="icon">📦</div>
+                            <div class="text">点击或拖拽上传模型</div>
+                            <div class="filename" id="modelName"></div>
+                            <input type="file" id="modelInput" accept=".onnx">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>上传图片</label>
+                        <div class="file-input-wrapper" id="imageWrapper">
+                            <div class="icon">🖼️</div>
+                            <div class="text">点击或拖拽上传图片</div>
+                            <div class="filename" id="imageName"></div>
+                            <input type="file" id="imageInput" accept="image/*">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>类别名称 (每行一个)</label>
+                        <textarea class="classes-input" id="classNames" placeholder="person&#10;car&#10;dog&#10;..."></textarea>
+                    </div>
+
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <label>置信度阈值</label>
+                            <span class="slider-value" id="confValue">0.25</span>
+                        </div>
+                        <input type="range" id="confThreshold" min="0.05" max="0.95" step="0.05" value="0.25">
+                    </div>
+
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <label>NMS IoU 阈值</label>
+                            <span class="slider-value" id="iouValue">0.45</span>
+                        </div>
+                        <input type="range" id="iouThreshold" min="0.1" max="0.9" step="0.05" value="0.45">
+                    </div>
+
+                    <button class="btn btn-primary" id="runBtn" disabled>开始推理</button>
+                </div>
+
+                <div class="panel" style="margin-top: 20px;">
+                    <div class="panel-title">检测结果</div>
+                    <div class="status-bar">
+                        <div class="status-item">
+                            <span class="status-label">状态</span>
+                            <span class="status-value" id="statusText">等待中</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">推理耗时</span>
+                            <span class="status-value" id="inferTime">-</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">检测目标</span>
+                            <span class="status-value" id="detectCount">0</span>
+                        </div>
+                    </div>
+                    <div class="detection-list" id="detectionList"></div>
+                </div>
+            </aside>
+
+            <main>
+                <div class="panel">
+                    <div class="panel-title">预览</div>
+                    <div class="canvas-container" id="canvasContainer">
+                        <div class="canvas-placeholder" id="placeholder">
+                            <div class="icon">🎯</div>
+                            <div>上传模型和图片开始检测</div>
+                        </div>
+                        <canvas id="canvas"></canvas>
+                        <div class="loading hidden" id="loading">
+                            <div class="spinner"></div>
+                            <div>正在推理...</div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let session = null;
+        let modelInputShape = null;
+        let currentImage = null;
+
+        // DOM元素
+        const modelInput = document.getElementById('modelInput');
+        const imageInput = document.getElementById('imageInput');
+        const modelName = document.getElementById('modelName');
+        const imageName = document.getElementById('imageName');
+        const classNamesInput = document.getElementById('classNames');
+        const confThreshold = document.getElementById('confThreshold');
+        const iouThreshold = document.getElementById('iouThreshold');
+        const confValue = document.getElementById('confValue');
+        const iouValue = document.getElementById('iouValue');
+        const runBtn = document.getElementById('runBtn');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const placeholder = document.getElementById('placeholder');
+        const loading = document.getElementById('loading');
+        const statusText = document.getElementById('statusText');
+        const inferTime = document.getElementById('inferTime');
+        const detectCount = document.getElementById('detectCount');
+        const detectionList = document.getElementById('detectionList');
+
+        // 颜色表
+        const colors = [
+            '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7',
+            '#DDA0DD', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9',
+            '#F8B500', '#00CED1', '#FF6347', '#7B68EE', '#3CB371'
+        ];
+
+        // 滑块事件
+        confThreshold.addEventListener('input', () => {
+            confValue.textContent = confThreshold.value;
+        });
+        iouThreshold.addEventListener('input', () => {
+            iouValue.textContent = iouThreshold.value;
+        });
+
+        // 加载模型
+        modelInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            modelName.textContent = file.name;
+            statusText.textContent = '加载模型中...';
+
+            try {
+                const arrayBuffer = await file.arrayBuffer();
+                session = await ort.InferenceSession.create(arrayBuffer);
+
+                // 获取输入形状
+                const inputName = session.inputNames[0];
+                const inputShape = session.inputNames.length > 0 ? null : null;
+
+                // 尝试从模型名称提取尺寸
+                const sizeMatch = file.name.match(/(\d{3,4})/);
+                const imgSize = sizeMatch ? parseInt(sizeMatch[1]) : 640;
+                // 确保是32的倍数
+                modelInputShape = Math.ceil(imgSize / 32) * 32;
+
+                statusText.textContent = `模型已加载 (${modelInputShape}x${modelInputShape})`;
+                updateRunButton();
+            } catch (err) {
+                console.error(err);
+                statusText.textContent = '模型加载失败';
+                session = null;
+            }
+        });
+
+        // 加载图片
+        imageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            imageName.textContent = file.name;
+
+            const img = new Image();
+            img.onload = () => {
+                currentImage = img;
+                drawImage(img);
+                updateRunButton();
+            };
+            img.src = URL.createObjectURL(file);
+        });
+
+        // 绘制图片
+        function drawImage(img) {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+            canvas.style.display = 'block';
+            placeholder.classList.add('hidden');
+        }
+
+        // 更新按钮状态
+        function updateRunButton() {
+            runBtn.disabled = !(session && currentImage);
+        }
+
+        // 获取类别名称
+        function getClassNames() {
+            const text = classNamesInput.value.trim();
+            if (!text) return null;
+            return text.split('\n').map(s => s.trim()).filter(s => s);
+        }
+
+        // 预处理图片
+        function preprocessImage(img, targetSize) {
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = targetSize;
+            tempCanvas.height = targetSize;
+            const tempCtx = tempCanvas.getContext('2d');
+
+            // 计算缩放比例 (letterbox)
+            const scale = Math.min(targetSize / img.width, targetSize / img.height);
+            const newWidth = img.width * scale;
+            const newHeight = img.height * scale;
+            const offsetX = (targetSize - newWidth) / 2;
+            const offsetY = (targetSize - newHeight) / 2;
+
+            // 填充灰色背景
+            tempCtx.fillStyle = '#808080';
+            tempCtx.fillRect(0, 0, targetSize, targetSize);
+
+            // 绘制缩放后的图片
+            tempCtx.drawImage(img, offsetX, offsetY, newWidth, newHeight);
+
+            // 获取像素数据
+            const imageData = tempCtx.getImageData(0, 0, targetSize, targetSize);
+            const pixels = imageData.data;
+
+            // 转换为 NCHW 格式并归一化
+            const float32Data = new Float32Array(3 * targetSize * targetSize);
+            for (let i = 0; i < targetSize * targetSize; i++) {
+                float32Data[i] = pixels[i * 4] / 255.0;                           // R
+                float32Data[i + targetSize * targetSize] = pixels[i * 4 + 1] / 255.0;     // G
+                float32Data[i + 2 * targetSize * targetSize] = pixels[i * 4 + 2] / 255.0; // B
+            }
+
+            return {
+                tensor: float32Data,
+                scale: scale,
+                offsetX: offsetX,
+                offsetY: offsetY
+            };
+        }
+
+        // NMS
+        function nms(boxes, scores, iouThresh) {
+            const indices = [];
+            const remaining = [...Array(boxes.length).keys()].sort((a, b) => scores[b] - scores[a]);
+
+            while (remaining.length > 0) {
+                const idx = remaining.shift();
+                indices.push(idx);
+
+                const toRemove = [];
+                for (let i = 0; i < remaining.length; i++) {
+                    const iou = calculateIoU(boxes[idx], boxes[remaining[i]]);
+                    if (iou > iouThresh) {
+                        toRemove.push(i);
+                    }
+                }
+                for (let i = toRemove.length - 1; i >= 0; i--) {
+                    remaining.splice(toRemove[i], 1);
+                }
+            }
+
+            return indices;
+        }
+
+        // 计算IoU
+        function calculateIoU(box1, box2) {
+            const x1 = Math.max(box1[0], box2[0]);
+            const y1 = Math.max(box1[1], box2[1]);
+            const x2 = Math.min(box1[2], box2[2]);
+            const y2 = Math.min(box1[3], box2[3]);
+
+            const intersection = Math.max(0, x2 - x1) * Math.max(0, y2 - y1);
+            const area1 = (box1[2] - box1[0]) * (box1[3] - box1[1]);
+            const area2 = (box2[2] - box2[0]) * (box2[3] - box2[1]);
+            const union = area1 + area2 - intersection;
+
+            return intersection / union;
+        }
+
+        // 后处理
+        function postprocess(output, imgWidth, imgHeight, preprocess, confThresh, iouThresh) {
+            const data = output.data;
+            const [batch, dims, numBoxes] = output.dims;
+            const numClasses = dims - 4;
+
+            const boxes = [];
+            const scores = [];
+            const classIds = [];
+
+            for (let i = 0; i < numBoxes; i++) {
+                // 找到最大类别分数
+                let maxScore = 0;
+                let maxClassId = 0;
+                for (let c = 0; c < numClasses; c++) {
+                    const score = data[(4 + c) * numBoxes + i];
+                    if (score > maxScore) {
+                        maxScore = score;
+                        maxClassId = c;
+                    }
+                }
+
+                if (maxScore < confThresh) continue;
+
+                // 获取边界框 (中心点格式)
+                const cx = data[0 * numBoxes + i];
+                const cy = data[1 * numBoxes + i];
+                const w = data[2 * numBoxes + i];
+                const h = data[3 * numBoxes + i];
+
+                // 转换到原图坐标
+                let x1 = (cx - w / 2 - preprocess.offsetX) / preprocess.scale;
+                let y1 = (cy - h / 2 - preprocess.offsetY) / preprocess.scale;
+                let x2 = (cx + w / 2 - preprocess.offsetX) / preprocess.scale;
+                let y2 = (cy + h / 2 - preprocess.offsetY) / preprocess.scale;
+
+                // 裁剪到图片边界
+                x1 = Math.max(0, Math.min(imgWidth, x1));
+                y1 = Math.max(0, Math.min(imgHeight, y1));
+                x2 = Math.max(0, Math.min(imgWidth, x2));
+                y2 = Math.max(0, Math.min(imgHeight, y2));
+
+                boxes.push([x1, y1, x2, y2]);
+                scores.push(maxScore);
+                classIds.push(maxClassId);
+            }
+
+            // NMS
+            const indices = nms(boxes, scores, iouThresh);
+
+            return indices.map(i => ({
+                box: boxes[i],
+                score: scores[i],
+                classId: classIds[i]
+            }));
+        }
+
+        // 绘制检测结果
+        function drawDetections(detections, classNames) {
+            detectionList.innerHTML = '';
+
+            detections.forEach((det, i) => {
+                const [x1, y1, x2, y2] = det.box;
+                const color = colors[det.classId % colors.length];
+                const label = classNames ? classNames[det.classId] : `Class ${det.classId}`;
+                const conf = (det.score * 100).toFixed(1);
+
+                // 绘制边界框
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 3;
+                ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+
+                // 绘制标签背景
+                const text = `${label} ${conf}%`;
+                ctx.font = 'bold 16px JetBrains Mono, monospace';
+                const textWidth = ctx.measureText(text).width;
+                const textHeight = 20;
+
+                ctx.fillStyle = color;
+                ctx.fillRect(x1, y1 - textHeight - 4, textWidth + 10, textHeight + 4);
+
+                // 绘制标签文字
+                ctx.fillStyle = '#000';
+                ctx.fillText(text, x1 + 5, y1 - 8);
+
+                // 添加到列表
+                const item = document.createElement('div');
+                item.className = 'detection-item';
+                item.innerHTML = `
+                    <div class="detection-color" style="background: ${color}"></div>
+                    <span class="detection-name">${label}</span>
+                    <span class="detection-conf">${conf}%</span>
+                `;
+                detectionList.appendChild(item);
+            });
+        }
+
+        // 运行推理
+        runBtn.addEventListener('click', async () => {
+            if (!session || !currentImage) return;
+
+            loading.classList.remove('hidden');
+            statusText.textContent = '推理中...';
+
+            try {
+                const startTime = performance.now();
+
+                // 预处理
+                const preprocess = preprocessImage(currentImage, modelInputShape);
+
+                // 创建输入张量
+                const inputTensor = new ort.Tensor('float32', preprocess.tensor, [1, 3, modelInputShape, modelInputShape]);
+
+                // 运行推理
+                const inputName = session.inputNames[0];
+                const results = await session.run({ [inputName]: inputTensor });
+
+                // 获取输出
+                const outputName = session.outputNames[0];
+                const output = results[outputName];
+
+                // 后处理
+                const confThresh = parseFloat(confThreshold.value);
+                const iouThresh = parseFloat(iouThreshold.value);
+                const detections = postprocess(output, currentImage.width, currentImage.height, preprocess, confThresh, iouThresh);
+
+                const endTime = performance.now();
+
+                // 重绘图片和检测结果
+                drawImage(currentImage);
+                const classNames = getClassNames();
+                drawDetections(detections, classNames);
+
+                // 更新状态
+                statusText.textContent = '完成';
+                inferTime.textContent = `${(endTime - startTime).toFixed(1)} ms`;
+                detectCount.textContent = detections.length;
+
+            } catch (err) {
+                console.error(err);
+                statusText.textContent = '推理失败: ' + err.message;
+            } finally {
+                loading.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

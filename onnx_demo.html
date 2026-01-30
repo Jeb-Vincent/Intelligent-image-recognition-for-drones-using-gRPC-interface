@@ -1,0 +1,1868 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>演示系统 - 批量检测版</title>
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --primary-hover: #4f46e5;
+            --primary-light: #eef2ff;
+            --accent-color: #10b981;
+            --accent-hover: #059669;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1f2937;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #312e81 0%, #4338ca 50%, #6366f1 100%);
+            color: white;
+            padding: 20px 40px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left h1 { font-size: 24px; font-weight: 600; letter-spacing: 0.5px; }
+        .header-left p { font-size: 14px; opacity: 0.9; margin-top: 5px; }
+        .header-right { display: flex; align-items: center; gap: 12px; }
+
+        .status-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .status-badge.connected { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
+        .status-badge.disconnected { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+
+        .settings-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .settings-btn:hover { background: rgba(255, 255, 255, 0.25); }
+
+        .config-bar {
+            background: var(--card-bg);
+            padding: 16px 40px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .config-item { display: flex; align-items: center; gap: 10px; }
+        .config-item label { font-size: 14px; color: var(--text-muted); white-space: nowrap; font-weight: 500; }
+        .config-item input {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 14px;
+            width: 80px;
+        }
+        .config-item input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        .config-item select {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 14px;
+            min-width: 220px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .main-container {
+            display: flex;
+            padding: 24px;
+            gap: 24px;
+            max-width: 1920px;
+            margin: 0 auto;
+        }
+
+        .sidebar { width: 320px; flex-shrink: 0; }
+        .sidebar-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+        .sidebar-title {
+            padding: 16px 20px;
+            font-size: 15px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .folder-input-wrapper {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+            background: #fafbfc;
+        }
+        .folder-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .folder-input-group:last-child { margin-bottom: 0; }
+        .folder-input-group label {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .folder-input-row {
+            display: flex;
+            gap: 8px;
+        }
+        .folder-input {
+            flex: 1;
+            padding: 8px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 12px;
+        }
+        .folder-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(99, 102, 241, 0.3);
+        }
+        .btn-primary:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-color) 0%, var(--accent-hover) 100%);
+        }
+        .btn-success:hover {
+            box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+        }
+
+        /* 模式切换标签 */
+        .mode-tab {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            background: #f8fafc;
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 6px;
+        }
+        .mode-tab:first-child { border-radius: 6px 0 0 6px; }
+        .mode-tab:last-child { border-radius: 0 6px 6px 0; }
+        .mode-tab.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        .mode-tab:hover:not(.active) {
+            background: #e5e7eb;
+        }
+
+        .image-list { max-height: 500px; overflow-y: auto; }
+
+        .image-item {
+            padding: 10px 14px;
+            cursor: pointer;
+            border-bottom: 1px solid #f3f4f6;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .image-item:hover { background: var(--primary-light); }
+        .image-item.active {
+            background: var(--primary-light);
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .image-thumb {
+            width: 50px;
+            height: 50px;
+            border-radius: 4px;
+            object-fit: cover;
+            background: #e9ecef;
+            flex-shrink: 0;
+        }
+
+        .image-info {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .image-name {
+            font-size: 13px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .image-accuracy {
+            font-size: 11px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .accuracy-badge {
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+        .accuracy-high { background: #d1fae5; color: #059669; }
+        .accuracy-medium { background: #fef3c7; color: #d97706; }
+        .accuracy-low { background: #fee2e2; color: #dc2626; }
+
+        .content { flex: 1; min-width: 0; }
+        .content-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        .content-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .content-title { font-size: 16px; font-weight: 600; }
+
+        .stats-bar {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .stat-box {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: #f8fafc;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        .stat-label { color: var(--text-muted); }
+        .stat-value { font-weight: 600; color: var(--primary-color); }
+        .stat-value.high { color: var(--success-color); }
+        .stat-value.warning { color: var(--warning-color); }
+        .stat-value.danger { color: var(--danger-color); }
+
+        .image-container {
+            display: flex;
+            gap: 15px;
+            padding: 20px;
+            flex-wrap: wrap;
+        }
+        .image-box {
+            flex: 1;
+            min-width: 300px;
+        }
+        .image-box-title {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            text-align: center;
+            font-weight: 500;
+        }
+        .image-wrapper {
+            background: #f0f0f0;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            min-height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .image-wrapper img {
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+        }
+
+        .placeholder { color: var(--text-muted); font-size: 14px; text-align: center; }
+        .placeholder-icon { font-size: 48px; margin-bottom: 10px; }
+
+        /* 进度条 */
+        .progress-section {
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+            display: none;
+        }
+        .progress-section.show { display: block; }
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .progress-title { font-size: 14px; font-weight: 500; }
+        .progress-percent { font-size: 14px; color: var(--primary-color); font-weight: 600; }
+        .progress-bar-wrapper {
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+        .progress-status {
+            margin-top: 8px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* 结果统计区域 */
+        .results-summary {
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+            background: #f8fafc;
+            display: none;
+        }
+        .results-summary.show { display: block; }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        .summary-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        .summary-card-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        .summary-card-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+
+        /* 单张图片正确率显示 */
+        .accuracy-display {
+            padding: 15px 20px;
+            border-top: 1px solid var(--border-color);
+            display: none;
+        }
+        .accuracy-display.show { display: block; }
+        .accuracy-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .accuracy-row:last-child { border-bottom: none; }
+        .accuracy-label { font-size: 14px; color: var(--text-muted); }
+        .accuracy-value {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .accuracy-bar {
+            flex: 1;
+            margin: 0 20px;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .accuracy-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        .accuracy-fill.high { background: var(--success-color); }
+        .accuracy-fill.medium { background: var(--warning-color); }
+        .accuracy-fill.low { background: var(--danger-color); }
+
+        /* 设置弹窗 */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.show { display: flex; }
+
+        .modal {
+            background: white;
+            border-radius: 8px;
+            width: 500px;
+            max-width: 90%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-title { font-size: 18px; font-weight: 600; }
+        .modal-close { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-muted); }
+        .modal-body { padding: 20px; }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500; }
+        .form-group input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .form-group input:focus { outline: none; border-color: var(--primary-color); }
+        .form-group .help-text { font-size: 12px; color: var(--text-muted); margin-top: 5px; }
+
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        .modal-footer button { padding: 8px 20px; border-radius: 4px; font-size: 14px; cursor: pointer; }
+        .btn-cancel { background: #f0f0f0; border: 1px solid var(--border-color); color: var(--text-color); }
+        .btn-save { background: var(--primary-color); border: none; color: white; }
+        .btn-save:hover { background: var(--primary-hover); }
+
+        /* 加载动画 */
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .loading.show { display: flex; }
+
+        .spinner {
+            width: 50px; height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loading-text { margin-top: 15px; color: var(--text-muted); font-size: 14px; }
+
+        /* 提示消息 */
+        .toast {
+            position: fixed;
+            bottom: 20px; right: 20px;
+            padding: 12px 24px;
+            background: #333;
+            color: white;
+            border-radius: 4px;
+            font-size: 14px;
+            z-index: 1001;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s;
+        }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .toast.error { background: var(--danger-color); }
+        .toast.success { background: var(--success-color); }
+
+        /* 变化检测模式（保留，编号13不改） */
+        .change-detection-mode .image-container { flex-wrap: wrap; }
+        .change-detection-mode .image-box { min-width: 280px; flex: 1 1 45%; }
+
+        .image-select-btn {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 8px 16px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .image-select-btn:hover { background: rgba(0, 0, 0, 0.85); }
+
+        .selected-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--success-color);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .change-stats {
+            display: flex;
+            gap: 30px;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        .change-stat-item { text-align: center; }
+        .change-stat-label { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+        .change-stat-value { font-size: 24px; font-weight: 700; color: var(--primary-color); }
+        .change-stat-value.warning { color: var(--danger-color); }
+
+        /* 变化检测结果区 */
+        .change-results-section { padding: 20px; border-top: 1px solid var(--border-color); display: none; }
+
+        @media (max-width: 1400px) {
+            .image-container { flex-direction: column; }
+            .image-box { min-width: 100%; }
+        }
+        @media (max-width: 768px) {
+            .main-container { flex-direction: column; }
+            .sidebar { width: 100%; }
+            .config-bar { padding: 15px 20px; }
+            .header { flex-direction: column; gap: 15px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <h1>🎯 演示系统 - 批量检测版</h1>
+            <p>支持批量检测、正确率计算、结果筛选保存</p>
+        </div>
+        <div class="header-right">
+            <span class="status-badge disconnected" id="statusBadge">● 未连接</span>
+            <button class="settings-btn" onclick="showSettings()">⚙️ 设置</button>
+        </div>
+    </header>
+
+    <div class="config-bar">
+        <div class="config-item">
+            <label>算法:</label>
+            <select id="algorithmSelect"><option value="">-- 选择算法 --</option></select>
+        </div>
+        <div class="config-item">
+            <label>置信度:</label>
+            <input type="number" id="confThreshold" value="0.25" min="0" max="1" step="0.05">
+        </div>
+        <div class="config-item">
+            <label>IOU:</label>
+            <input type="number" id="iouThreshold" value="0.45" min="0" max="1" step="0.05">
+        </div>
+        <button class="btn-primary" onclick="refreshData()">🔄 刷新数据</button>
+    </div>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <!-- 目录配置区 -->
+            <div class="sidebar-section">
+                <div class="sidebar-title">📁 目录配置</div>
+                <div class="folder-input-wrapper">
+                    <!-- 模式切换标签 -->
+                    <div style="display: flex; gap: 4px; margin-bottom: 12px;">
+                        <button class="mode-tab active" id="tabDetect" onclick="switchMode('detect')">🚀 批量检测</button>
+                        <button class="mode-tab" id="tabView" onclick="switchMode('view')">📂 查看结果</button>
+                    </div>
+                    
+                    <!-- 批量检测模式 -->
+                    <div id="detectModePanel">
+                        <div class="folder-input-group">
+                            <label>原图像目录:</label>
+                            <input type="text" id="imageDirInput" placeholder="如: D:/images" class="folder-input">
+                        </div>
+                        <div class="folder-input-group">
+                            <label>真实标签目录 (YOLO txt):</label>
+                            <input type="text" id="labelDirInput" placeholder="如: D:/labels" class="folder-input">
+                        </div>
+                        <div class="folder-input-group">
+                            <label>输出目录:</label>
+                            <input type="text" id="outputDirInput" placeholder="如: D:/output" class="folder-input">
+                        </div>
+                        <div style="display: flex; gap: 8px; margin-top: 12px;">
+                            <button class="btn-primary btn-success" onclick="startBatchDetection()" id="batchDetectBtn">
+                                🚀 一键检测
+                            </button>
+                            <button class="btn-primary" onclick="saveResults()" id="saveResultsBtn" disabled>
+                                💾 保存结果
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 查看结果模式 -->
+                    <div id="viewModePanel" style="display: none;">
+                        <div class="folder-input-group">
+                            <label>批处理输出目录 (包含5个子文件夹):</label>
+                            <input type="text" id="resultDirInput" placeholder="如: D:/Wenshuo/UAVData/6" class="folder-input">
+                        </div>
+                        <button class="btn-primary" onclick="loadResultDir()" style="margin-top: 12px; width: 100%;">
+                            📂 加载目录
+                        </button>
+                        
+                        <!-- 统计信息 -->
+                        <div id="resultDirStats" style="display: none; margin-top: 12px; padding: 12px; background: #f8fafc; border-radius: 8px;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                                <div style="text-align: center;">
+                                    <div style="font-size: 20px; font-weight: 700; color: var(--primary-color);" id="rdTotalCount">0</div>
+                                    <div style="font-size: 11px; color: var(--text-muted);">总图片</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 20px; font-weight: 700; color: var(--success-color);" id="rdAvgAccuracy">0%</div>
+                                    <div style="font-size: 11px; color: var(--text-muted);">平均正确率</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 16px; font-weight: 600;" id="rdPositiveCount">0</div>
+                                    <div style="font-size: 11px; color: var(--text-muted);">正样本</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 16px; font-weight: 600;" id="rdNegativeCount">0</div>
+                                    <div style="font-size: 11px; color: var(--text-muted);">负样本</div>
+                                </div>
+                            </div>
+                            <div style="margin-top: 10px; font-size: 11px; color: var(--text-muted);">
+                                <div id="rdDistribution"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 图片列表 -->
+            <div class="sidebar-section">
+                <div class="sidebar-title">
+                    🖼️ 图片列表 <span id="imageCount" style="font-weight: normal; color: var(--text-muted);"></span>
+                    <select id="imageFilter" style="float: right; font-size: 11px; padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border-color);" onchange="filterImageList()">
+                        <option value="all">全部</option>
+                        <option value="high">≥95%</option>
+                        <option value="mid">90-95%</option>
+                        <option value="low">&lt;90%</option>
+                        <option value="positive">正样本</option>
+                        <option value="negative">负样本</option>
+                    </select>
+                </div>
+                <div class="image-list" id="imageList">
+                    <div class="placeholder" style="padding: 20px;">请先进行批量检测或加载结果目录</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="content-card" id="contentCard">
+                <div class="content-header">
+                    <div class="content-title" id="contentTitle">检测结果</div>
+                    <div class="stats-bar" id="statsBar" style="display: none;">
+                        <div class="stat-box">
+                            <span class="stat-label">总图片:</span>
+                            <span class="stat-value" id="totalImagesCount">0</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">总正确率:</span>
+                            <span class="stat-value" id="totalAccuracy">0%</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">≥95%:</span>
+                            <span class="stat-value high" id="high95Count">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 进度条区域 -->
+                <div class="progress-section" id="progressSection">
+                    <div class="progress-header">
+                        <span class="progress-title">批量检测进度</span>
+                        <span class="progress-percent" id="progressPercent">0%</span>
+                    </div>
+                    <div class="progress-bar-wrapper">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                    <div class="progress-status" id="progressStatus">准备中...</div>
+                </div>
+
+                <!-- 普通检测模式 - 三图对比 -->
+                <div class="image-container" id="normalModeContainer">
+                    <div class="image-box">
+                        <div class="image-box-title">原始图片</div>
+                        <div class="image-wrapper" id="originalImageWrapper">
+                            <div class="placeholder">
+                                <div class="placeholder-icon">📷</div>
+                                <div>请从左侧选择图片</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image-box">
+                        <div class="image-box-title">模型预测结果</div>
+                        <div class="image-wrapper" id="detectImageWrapper">
+                            <div class="placeholder">
+                                <div class="placeholder-icon">🎯</div>
+                                <div>模型推理后的检测结果</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image-box">
+                        <div class="image-box-title">真实标签</div>
+                        <div class="image-wrapper" id="realImageWrapper">
+                            <div class="placeholder">
+                                <div class="placeholder-icon">✅</div>
+                                <div>根据真实标签绘制的框</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 变化检测模式（保留） -->
+                <div class="image-container" id="changeModeContainer" style="display: none; flex-wrap: wrap;">
+                    <div class="image-box" style="flex: 1 1 45%; min-width: 280px;">
+                        <div class="image-box-title">图片1（时相1）</div>
+                        <div class="image-wrapper" id="changeImage1Wrapper" style="position: relative;">
+                            <div class="placeholder">
+                                <div class="placeholder-icon">📷</div>
+                                <div>点击下方按钮选择图片1</div>
+                            </div>
+                            <button class="image-select-btn" onclick="selectChangeImage(1)">选择图片1</button>
+                        </div>
+                    </div>
+                    <div class="image-box" style="flex: 1 1 45%; min-width: 280px;">
+                        <div class="image-box-title">图片2（时相2）</div>
+                        <div class="image-wrapper" id="changeImage2Wrapper" style="position: relative;">
+                            <div class="placeholder">
+                                <div class="placeholder-icon">📷</div>
+                                <div>点击下方按钮选择图片2</div>
+                            </div>
+                            <button class="image-select-btn" onclick="selectChangeImage(2)">选择图片2</button>
+                        </div>
+                    </div>
+                    <div class="image-box" style="flex: 1 1 45%; min-width: 280px;">
+                        <div class="image-box-title">变化掩码</div>
+                        <div class="image-wrapper" id="changeMaskWrapper">
+                            <div class="placeholder">
+                                <div class="placeholder-icon">🎭</div>
+                                <div>检测后显示变化区域</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image-box" style="flex: 1 1 45%; min-width: 280px;">
+                        <div class="image-box-title">叠加结果</div>
+                        <div class="image-wrapper" id="changeResultWrapper">
+                            <div class="placeholder">
+                                <div class="placeholder-icon">🎯</div>
+                                <div>检测后显示叠加结果</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 变化检测结果统计 -->
+                <div class="change-results-section" id="changeResultsSection">
+                    <div class="change-stats">
+                        <div class="change-stat-item">
+                            <div class="change-stat-label">变化比例</div>
+                            <div class="change-stat-value" id="changeRatio">0%</div>
+                        </div>
+                        <div class="change-stat-item">
+                            <div class="change-stat-label">检测耗时</div>
+                            <div class="change-stat-value" id="changeDetectTime">0ms</div>
+                        </div>
+                        <div class="change-stat-item">
+                            <div class="change-stat-label">图片尺寸</div>
+                            <div class="change-stat-value" id="changeImageSize">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 单张图片正确率显示 -->
+                <div class="accuracy-display" id="accuracyDisplay">
+                    <div class="accuracy-row">
+                        <span class="accuracy-label">单张图片正确率</span>
+                        <div class="accuracy-bar">
+                            <div class="accuracy-fill" id="accuracyFill" style="width: 0%;"></div>
+                        </div>
+                        <span class="accuracy-value" id="singleAccuracy">0%</span>
+                    </div>
+                    <div class="accuracy-row">
+                        <span class="accuracy-label">检测框数量</span>
+                        <span class="accuracy-value" id="detectCount" style="font-size: 14px;">0</span>
+                    </div>
+                    <div class="accuracy-row">
+                        <span class="accuracy-label">真实框数量</span>
+                        <span class="accuracy-value" id="gtCount" style="font-size: 14px;">0</span>
+                    </div>
+                </div>
+
+                <!-- 结果统计摘要 -->
+                <div class="results-summary" id="resultsSummary">
+                    <div class="summary-grid">
+                        <div class="summary-card">
+                            <div class="summary-card-value" id="summaryTotal">0</div>
+                            <div class="summary-card-label">检测图片数</div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-card-value" id="summaryAvgAcc">0%</div>
+                            <div class="summary-card-label">平均正确率</div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-card-value" id="summaryHigh95">0</div>
+                            <div class="summary-card-label">正确率≥95%</div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-card-value" id="summaryHigh90">0</div>
+                            <div class="summary-card-label">正确率≥90%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 设置弹窗 -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">⚙️ 服务配置</div>
+                <button class="modal-close" onclick="hideSettings()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>服务器地址</label>
+                    <input type="text" id="settingHost" placeholder="localhost">
+                    <div class="help-text">后端服务的 IP 地址或域名</div>
+                </div>
+                <div class="form-group">
+                    <label>服务端口</label>
+                    <input type="text" id="settingPort" placeholder="8082">
+                    <div class="help-text">后端服务监听的端口号</div>
+                </div>
+                <div class="form-group">
+                    <label>模型目录</label>
+                    <input type="text" id="settingModelDir" placeholder="./">
+                    <div class="help-text">ONNX 模型文件所在目录</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="hideSettings()">取消</button>
+                <button class="btn-save" onclick="saveSettings()">保存并连接</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <div class="loading-text" id="loadingText">正在检测...</div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // 默认配置
+        const DEFAULT_CONFIG = {
+            host: 'localhost',
+            port: '8082',
+            modelDir: './',
+            confThreshold: 0.25,
+            iouThreshold: 0.45
+        };
+
+        // 全局状态
+        const state = {
+            currentImage: null,
+            algorithms: [],
+            config: { ...DEFAULT_CONFIG },
+            connected: false,
+            batchResults: null,
+            // 变化检测相关
+            isChangeDetection: false,
+            changeImage1: null,
+            changeImage2: null,
+            selectingChangeImage: 0,
+            // 结果目录查看相关
+            currentMode: 'detect',  // 'detect' 或 'view'
+            resultDirImages: [],    // 结果目录中的图片列表
+            filteredImages: []      // 筛选后的图片列表
+        };
+
+        function getServerUrl() {
+            return `http://${state.config.host}:${state.config.port}`;
+        }
+
+        // 切换模式：批量检测 / 查看结果
+        function switchMode(mode) {
+            state.currentMode = mode;
+            
+            // 更新标签样式
+            document.getElementById('tabDetect').classList.toggle('active', mode === 'detect');
+            document.getElementById('tabView').classList.toggle('active', mode === 'view');
+            
+            // 切换面板显示
+            document.getElementById('detectModePanel').style.display = mode === 'detect' ? 'block' : 'none';
+            document.getElementById('viewModePanel').style.display = mode === 'view' ? 'block' : 'none';
+            
+            // 清空图片列表
+            if (mode === 'view') {
+                document.getElementById('imageList').innerHTML = '<div class="placeholder" style="padding: 20px;">请输入结果目录路径并点击加载</div>';
+            } else {
+                document.getElementById('imageList').innerHTML = '<div class="placeholder" style="padding: 20px;">请先进行批量检测</div>';
+            }
+        }
+
+        // 加载结果目录
+        async function loadResultDir() {
+            const dirPath = document.getElementById('resultDirInput').value.trim();
+            if (!dirPath) {
+                showToast('请输入结果目录路径', 'error');
+                return;
+            }
+            
+            setLoading(true, '正在加载目录...');
+            
+            try {
+                const result = await apiRequest('/api/load_result_dir', {
+                    method: 'POST',
+                    body: JSON.stringify({ dir_path: dirPath })
+                });
+                
+                if (result.code === 200) {
+                    const data = result.data;
+                    state.resultDirImages = data.images;
+                    state.filteredImages = data.images;
+                    
+                    // 更新统计信息
+                    document.getElementById('resultDirStats').style.display = 'block';
+                    document.getElementById('rdTotalCount').textContent = data.total_count;
+                    document.getElementById('rdAvgAccuracy').textContent = data.avg_accuracy + '%';
+                    document.getElementById('rdPositiveCount').textContent = data.positive_count;
+                    document.getElementById('rdNegativeCount').textContent = data.negative_count;
+                    
+                    // 正确率分布
+                    const dist = data.accuracy_distribution;
+                    document.getElementById('rdDistribution').innerHTML = 
+                        `≥98%: ${dist['>=98%']} | 95-98%: ${dist['95-98%']} | 90-95%: ${dist['90-95%']} | 85-90%: ${dist['85-90%']} | &lt;85%: ${dist['<85%']}`;
+                    
+                    // 更新顶部统计栏
+                    document.getElementById('statsBar').style.display = 'flex';
+                    document.getElementById('totalImagesCount').textContent = data.total_count;
+                    document.getElementById('totalAccuracy').textContent = data.avg_accuracy + '%';
+                    document.getElementById('high95Count').textContent = dist['>=98%'] + dist['95-98%'];
+                    
+                    // 渲染图片列表
+                    renderResultDirImageList();
+                    
+                    showToast(`加载成功: ${data.total_count} 张图片，平均正确率 ${data.avg_accuracy}%`, 'success');
+                } else {
+                    showToast(result.message || '加载失败', 'error');
+                }
+            } catch (error) {
+                showToast('请求失败: ' + error.message, 'error');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // 渲染结果目录的图片列表
+        function renderResultDirImageList() {
+            const listEl = document.getElementById('imageList');
+            const images = state.filteredImages;
+            
+            document.getElementById('imageCount').textContent = `(${images.length}张)`;
+            
+            if (images.length === 0) {
+                listEl.innerHTML = '<div class="placeholder" style="padding: 20px;">没有符合条件的图片</div>';
+                return;
+            }
+            
+            listEl.innerHTML = images.map((img, idx) => {
+                const accClass = img.accuracy >= 95 ? 'accuracy-high' : img.accuracy >= 90 ? 'accuracy-medium' : 'accuracy-low';
+                return `
+                    <div class="image-item" onclick="selectResultDirImage(${idx})" data-name="${img.name}">
+                        <div class="image-info">
+                            <div class="image-name">${img.name}</div>
+                            <div class="image-accuracy">
+                                <span class="accuracy-badge ${accClass}">${img.accuracy}%</span>
+                                <span>检测:${img.detection_count} 标签:${img.gt_count}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // 筛选图片列表
+        function filterImageList() {
+            const filter = document.getElementById('imageFilter').value;
+            const images = state.currentMode === 'view' ? state.resultDirImages : 
+                          (state.batchResults?.results || []).map(r => ({
+                              name: r.name,
+                              accuracy: r.accuracy * 100,
+                              detection_count: r.detections?.length || 0,
+                              gt_count: r.ground_truths?.length || 0
+                          }));
+            
+            state.filteredImages = images.filter(img => {
+                switch (filter) {
+                    case 'high': return img.accuracy >= 95;
+                    case 'mid': return img.accuracy >= 90 && img.accuracy < 95;
+                    case 'low': return img.accuracy < 90;
+                    case 'positive': return img.gt_count > 0;
+                    case 'negative': return img.gt_count === 0;
+                    default: return true;
+                }
+            });
+            
+            if (state.currentMode === 'view') {
+                renderResultDirImageList();
+            } else {
+                // 重新渲染批量检测的列表
+                renderBatchResultList();
+            }
+        }
+
+        // 渲染批量检测结果列表（用于筛选）
+        function renderBatchResultList() {
+            const listEl = document.getElementById('imageList');
+            const images = state.filteredImages;
+            
+            document.getElementById('imageCount').textContent = `(${images.length}张)`;
+            
+            if (images.length === 0) {
+                listEl.innerHTML = '<div class="placeholder" style="padding: 20px;">没有符合条件的图片</div>';
+                return;
+            }
+            
+            listEl.innerHTML = images.map((img, idx) => {
+                const accClass = img.accuracy >= 95 ? 'accuracy-high' : img.accuracy >= 90 ? 'accuracy-medium' : 'accuracy-low';
+                return `
+                    <div class="image-item" onclick="selectImageFromBatch('${img.name}')" data-name="${img.name}">
+                        <div class="image-info">
+                            <div class="image-name">${img.name}</div>
+                            <div class="image-accuracy">
+                                <span class="accuracy-badge ${accClass}">${img.accuracy.toFixed(1)}%</span>
+                                <span>检测:${img.detection_count} 标签:${img.gt_count}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // 从批量检测结果中选择图片
+        async function selectImageFromBatch(imageName) {
+            document.querySelectorAll('.image-item').forEach(el => {
+                el.classList.toggle('active', el.dataset.name === imageName);
+            });
+            
+            setLoading(true, '正在加载对比图...');
+            
+            try {
+                const result = await apiRequest('/api/get_comparison', {
+                    method: 'POST',
+                    body: JSON.stringify({ image_name: imageName })
+                });
+                
+                if (result.code === 200) {
+                    displayComparisonImages(result.data);
+                }
+            } catch (error) {
+                showToast('加载失败', 'error');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // 选择结果目录中的图片
+        async function selectResultDirImage(idx) {
+            const img = state.filteredImages[idx];
+            state.currentImage = img;
+            
+            // 更新高亮
+            document.querySelectorAll('.image-item').forEach((el, i) => {
+                el.classList.toggle('active', el.dataset.name === img.name);
+            });
+            
+            setLoading(true, '加载图片...');
+            
+            try {
+                const result = await apiRequest('/api/get_result_image', {
+                    method: 'POST',
+                    body: JSON.stringify({ image_name: img.name })
+                });
+                
+                if (result.code === 200) {
+                    displayComparisonImages(result.data);
+                }
+            } catch (error) {
+                showToast('加载图片失败', 'error');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // 显示对比图片
+        function displayComparisonImages(data) {
+            // 原图
+            document.getElementById('originalImageWrapper').innerHTML = 
+                `<img src="${data.original_image}" alt="原图">`;
+            
+            // 预测图
+            if (data.detect_image) {
+                document.getElementById('detectImageWrapper').innerHTML = 
+                    `<img src="${data.detect_image}" alt="预测结果">`;
+            } else {
+                document.getElementById('detectImageWrapper').innerHTML = `
+                    <div class="placeholder">
+                        <div class="placeholder-icon">❌</div>
+                        <div>无预测图</div>
+                    </div>
+                `;
+            }
+            
+            // 真实标签图
+            if (data.real_image) {
+                document.getElementById('realImageWrapper').innerHTML = 
+                    `<img src="${data.real_image}" alt="真实标签">`;
+            } else {
+                document.getElementById('realImageWrapper').innerHTML = `
+                    <div class="placeholder">
+                        <div class="placeholder-icon">❌</div>
+                        <div>无标签图</div>
+                    </div>
+                `;
+            }
+            
+            // 更新正确率显示
+            updateAccuracyDisplay(data);
+            document.getElementById('contentTitle').textContent = `当前图片: ${data.name}`;
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast ' + type;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function setLoading(show, text = '正在处理...') {
+            const loading = document.getElementById('loading');
+            document.getElementById('loadingText').textContent = text;
+            loading.classList.toggle('show', show);
+        }
+
+        function updateConnectionStatus(connected) {
+            state.connected = connected;
+            const badge = document.getElementById('statusBadge');
+            badge.className = connected ? 'status-badge connected' : 'status-badge disconnected';
+            badge.textContent = connected ? '● 已连接' : '● 未连接';
+        }
+
+        async function apiRequest(endpoint, options = {}) {
+            const url = getServerUrl() + endpoint;
+            try {
+                const response = await fetch(url, {
+                    ...options,
+                    headers: { 'Content-Type': 'application/json', ...options.headers }
+                });
+                return await response.json();
+            } catch (error) {
+                console.error('API Error:', error);
+                throw error;
+            }
+        }
+
+        // 切换检测模式
+        function switchDetectionMode(isChangeDetection) {
+            state.isChangeDetection = isChangeDetection;
+
+            const normalContainer = document.getElementById('normalModeContainer');
+            const changeContainer = document.getElementById('changeModeContainer');
+            const changeResultsSection = document.getElementById('changeResultsSection');
+
+            if (isChangeDetection) {
+                normalContainer.style.display = 'none';
+                changeContainer.style.display = 'flex';
+                document.getElementById('contentTitle').textContent = '变化检测';
+                document.getElementById('accuracyDisplay').classList.remove('show');
+            } else {
+                normalContainer.style.display = 'flex';
+                changeContainer.style.display = 'none';
+                changeResultsSection.style.display = 'none';
+                document.getElementById('contentTitle').textContent = '检测结果';
+            }
+        }
+
+        // 选择变化检测图片
+        function selectChangeImage(imageNum) {
+            state.selectingChangeImage = imageNum;
+            showToast(`请从左侧图片列表中选择图片${imageNum}`, 'info');
+        }
+
+        function showSettings() {
+            document.getElementById('settingHost').value = state.config.host;
+            document.getElementById('settingPort').value = state.config.port;
+            document.getElementById('settingModelDir').value = state.config.modelDir;
+            document.getElementById('settingsModal').classList.add('show');
+        }
+
+        function hideSettings() {
+            document.getElementById('settingsModal').classList.remove('show');
+        }
+
+        async function saveSettings() {
+            state.config.host = document.getElementById('settingHost').value || DEFAULT_CONFIG.host;
+            state.config.port = document.getElementById('settingPort').value || DEFAULT_CONFIG.port;
+            state.config.modelDir = document.getElementById('settingModelDir').value || DEFAULT_CONFIG.modelDir;
+
+            localStorage.setItem('onnx_demo_config', JSON.stringify(state.config));
+            hideSettings();
+            showToast('配置已保存，正在连接...', 'info');
+
+            try {
+                await apiRequest('/api/config', {
+                    method: 'POST',
+                    body: JSON.stringify({ model_dir: state.config.modelDir })
+                });
+            } catch (e) {}
+
+            await refreshData();
+        }
+
+        function loadSettings() {
+            const saved = localStorage.getItem('onnx_demo_config');
+            if (saved) {
+                try {
+                    state.config = { ...DEFAULT_CONFIG, ...JSON.parse(saved) };
+                } catch (e) {}
+            }
+            document.getElementById('confThreshold').value = state.config.confThreshold;
+            document.getElementById('iouThreshold').value = state.config.iouThreshold;
+        }
+
+        async function loadAlgorithms() {
+            try {
+                const result = await apiRequest('/api/algorithms');
+                if (result.code === 200) {
+                    state.algorithms = result.data;
+                    const select = document.getElementById('algorithmSelect');
+                    select.innerHTML = '<option value="">-- 选择算法 --</option>';
+                    result.data.forEach(algo => {
+                        const option = document.createElement('option');
+                        option.value = algo.id;
+                        option.dataset.type = algo.type || 'detection';
+                        option.textContent = `${algo.id}. ${algo.name}`;
+                        select.appendChild(option);
+                    });
+
+                    select.onchange = function() {
+                        const selectedOption = select.options[select.selectedIndex];
+                        const isChange = selectedOption && selectedOption.dataset.type === 'change_detection';
+                        switchDetectionMode(isChange);
+                    };
+
+                    return true;
+                }
+            } catch (error) {}
+            return false;
+        }
+
+        // 批量检测
+        async function startBatchDetection() {
+            const algoId = document.getElementById('algorithmSelect').value;
+            const imageDir = document.getElementById('imageDirInput').value.trim();
+            const labelDir = document.getElementById('labelDirInput').value.trim();
+            const outputDir = document.getElementById('outputDirInput').value.trim();
+
+            if (!algoId) { showToast('请选择算法', 'error'); return; }
+            if (!imageDir) { showToast('请输入原图像目录', 'error'); return; }
+            if (!labelDir) { showToast('请输入真实标签目录', 'error'); return; }
+            if (!outputDir) { showToast('请输入输出目录', 'error'); return; }
+
+            // 检查是否是变化检测
+            if (state.isChangeDetection) {
+                showToast('变化检测（编号13）请使用单张图片检测模式', 'error');
+                return;
+            }
+
+            const confThreshold = parseFloat(document.getElementById('confThreshold').value) || state.config.confThreshold;
+            const iouThreshold = parseFloat(document.getElementById('iouThreshold').value) || state.config.iouThreshold;
+
+            // 显示进度条
+            document.getElementById('progressSection').classList.add('show');
+            document.getElementById('progressBar').style.width = '0%';
+            document.getElementById('progressPercent').textContent = '0%';
+            document.getElementById('progressStatus').textContent = '正在初始化...';
+            document.getElementById('batchDetectBtn').disabled = true;
+
+            // 模拟进度动画
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                if (progress < 90) {
+                    progress += Math.random() * 5;
+                    progress = Math.min(progress, 90);
+                    document.getElementById('progressBar').style.width = progress + '%';
+                    document.getElementById('progressPercent').textContent = Math.round(progress) + '%';
+                    document.getElementById('progressStatus').textContent = `正在检测图片... (${Math.round(progress)}%)`;
+                }
+            }, 200);
+
+            try {
+                const result = await apiRequest('/api/batch_detect', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        algorithm_id: parseInt(algoId),
+                        image_dir: imageDir,
+                        label_dir: labelDir,
+                        output_dir: outputDir,
+                        conf_threshold: confThreshold,
+                        iou_threshold: iouThreshold
+                    })
+                });
+
+                clearInterval(progressInterval);
+
+                if (result.code === 200) {
+                    // 完成进度
+                    document.getElementById('progressBar').style.width = '100%';
+                    document.getElementById('progressPercent').textContent = '100%';
+                    document.getElementById('progressStatus').textContent = '检测完成！';
+
+                    state.batchResults = result.data;
+
+                    // 更新统计
+                    updateStatistics(result.data);
+
+                    // 更新图片列表
+                    updateImageList(result.data.results);
+
+                    // 启用保存按钮
+                    document.getElementById('saveResultsBtn').disabled = false;
+
+                    showToast(`检测完成！共 ${result.data.total_images} 张图片，平均正确率 ${result.data.avg_accuracy}%`, 'success');
+                } else {
+                    showToast(result.message || '检测失败', 'error');
+                    document.getElementById('progressSection').classList.remove('show');
+                }
+            } catch (error) {
+                clearInterval(progressInterval);
+                showToast('批量检测请求失败', 'error');
+                document.getElementById('progressSection').classList.remove('show');
+            } finally {
+                document.getElementById('batchDetectBtn').disabled = false;
+            }
+        }
+
+        // 更新统计信息
+        function updateStatistics(data) {
+            document.getElementById('statsBar').style.display = 'flex';
+            document.getElementById('totalImagesCount').textContent = data.total_images;
+            document.getElementById('totalAccuracy').textContent = data.avg_accuracy + '%';
+            document.getElementById('high95Count').textContent = data.high_accuracy_count;
+
+            // 更新摘要
+            document.getElementById('resultsSummary').classList.add('show');
+            document.getElementById('summaryTotal').textContent = data.total_images;
+            document.getElementById('summaryAvgAcc').textContent = data.avg_accuracy + '%';
+            document.getElementById('summaryHigh95').textContent = data.high_accuracy_count;
+
+            // 计算90%以上的数量
+            const high90Count = data.results.filter(r => r.accuracy >= 90).length;
+            document.getElementById('summaryHigh90').textContent = high90Count;
+        }
+
+        // 更新图片列表
+        function updateImageList(results) {
+            const imageList = document.getElementById('imageList');
+            imageList.innerHTML = '';
+
+            document.getElementById('imageCount').textContent = `(${results.length}张)`;
+
+            results.sort((a, b) => b.accuracy - a.accuracy);
+
+            results.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'image-item';
+
+                let accClass = 'accuracy-low';
+                if (item.accuracy >= 95) accClass = 'accuracy-high';
+                else if (item.accuracy >= 80) accClass = 'accuracy-medium';
+
+                div.innerHTML = `
+                    <div class="image-info">
+                        <span class="image-name">${item.name}</span>
+                        <div class="image-accuracy">
+                            <span class="accuracy-badge ${accClass}">${item.accuracy}%</span>
+                            <span>检测: ${item.detection_count} | 真实: ${item.gt_count}</span>
+                        </div>
+                    </div>
+                `;
+                div.onclick = () => selectImage(item, div);
+                imageList.appendChild(div);
+            });
+        }
+
+        // 选择图片查看对比
+        async function selectImage(item, element) {
+            // 变化检测模式处理
+            if (state.isChangeDetection && state.selectingChangeImage > 0) {
+                await handleChangeImageSelection(item);
+                return;
+            }
+
+            state.currentImage = item;
+
+            document.querySelectorAll('.image-item').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+
+            setLoading(true, '正在加载对比图...');
+
+            try {
+                const result = await apiRequest('/api/get_comparison', {
+                    method: 'POST',
+                    body: JSON.stringify({ image_name: item.name })
+                });
+
+                if (result.code === 200) {
+                    const data = result.data;
+
+                    // 显示原图
+                    document.getElementById('originalImageWrapper').innerHTML =
+                        `<img src="${data.original_image}" alt="原图">`;
+
+                    // 显示检测图
+                    if (data.detect_image) {
+                        document.getElementById('detectImageWrapper').innerHTML =
+                            `<img src="${data.detect_image}" alt="检测结果">`;
+                    } else {
+                        document.getElementById('detectImageWrapper').innerHTML = `
+                            <div class="placeholder">
+                                <div class="placeholder-icon">🎯</div>
+                                <div>无检测图像</div>
+                            </div>
+                        `;
+                    }
+
+                    // 显示真实标签图
+                    if (data.real_image) {
+                        document.getElementById('realImageWrapper').innerHTML =
+                            `<img src="${data.real_image}" alt="真实标签">`;
+                    } else {
+                        document.getElementById('realImageWrapper').innerHTML = `
+                            <div class="placeholder">
+                                <div class="placeholder-icon">✅</div>
+                                <div>无真实标签图像</div>
+                            </div>
+                        `;
+                    }
+
+                    // 显示正确率
+                    updateAccuracyDisplay(data);
+
+                    document.getElementById('contentTitle').textContent = `当前图片: ${item.name}`;
+                } else {
+                    showToast(result.message || '加载失败', 'error');
+                }
+            } catch (error) {
+                showToast('加载对比图失败', 'error');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // 更新正确率显示
+        function updateAccuracyDisplay(data) {
+            document.getElementById('accuracyDisplay').classList.add('show');
+
+            const accuracy = data.accuracy;
+            document.getElementById('singleAccuracy').textContent = accuracy + '%';
+            document.getElementById('detectCount').textContent = data.detection_count;
+            document.getElementById('gtCount').textContent = data.gt_count;
+
+            const fill = document.getElementById('accuracyFill');
+            fill.style.width = accuracy + '%';
+
+            fill.classList.remove('high', 'medium', 'low');
+            if (accuracy >= 90) fill.classList.add('high');
+            else if (accuracy >= 70) fill.classList.add('medium');
+            else fill.classList.add('low');
+        }
+
+        // 保存结果
+        async function saveResults() {
+            if (!state.batchResults) {
+                showToast('没有可保存的检测结果', 'error');
+                return;
+            }
+
+            setLoading(true, '正在筛选并保存结果...');
+
+            try {
+                const result = await apiRequest('/api/save_results', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        min_accuracy: 0.87,
+                        target_count: 100
+                    })
+                });
+
+                if (result.code === 200) {
+                    const data = result.data;
+
+                    showToast(`保存完成！共保存 ${data.saved_count} 张图片，总正确率 ${data.total_accuracy}%`, 'success');
+
+                    // 更新左侧图片列表为新的images目录
+                    await loadNewImageDir(data.new_image_dir);
+
+                    // 更新统计显示
+                    document.getElementById('totalAccuracy').textContent = data.total_accuracy + '%';
+                } else {
+                    showToast(result.message || '保存失败', 'error');
+                }
+            } catch (error) {
+                showToast('保存请求失败', 'error');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // 加载新的图片目录
+        async function loadNewImageDir(newImageDir) {
+            try {
+                // 更新服务端图片目录
+                await apiRequest('/api/config', {
+                    method: 'POST',
+                    body: JSON.stringify({ image_dir: newImageDir })
+                });
+
+                // 获取图片列表
+                const result = await apiRequest('/api/folders');
+                if (result.code === 200 && result.data.length > 0) {
+                    const folder = result.data[0];
+                    const imagesResult = await apiRequest(`/api/images/${folder.path}`);
+
+                    if (imagesResult.code === 200) {
+                        const imageList = document.getElementById('imageList');
+                        imageList.innerHTML = '';
+
+                        document.getElementById('imageCount').textContent = `(${imagesResult.data.length}张)`;
+
+                        imagesResult.data.forEach(img => {
+                            const div = document.createElement('div');
+                            div.className = 'image-item';
+                            div.innerHTML = `
+                                <img class="image-thumb" src="${getServerUrl()}/api/thumb/${img.path}" alt="${img.name}" loading="lazy">
+                                <div class="image-info">
+                                    <span class="image-name">${img.name}</span>
+                                    <span class="image-accuracy">${img.size_str}</span>
+                                </div>
+                            `;
+                            div.onclick = () => selectImageFromDir(img, div);
+                            imageList.appendChild(div);
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error('加载新目录失败:', error);
+            }
+        }
+
+        // 从保存后的目录选择图片
+        async function selectImageFromDir(img, element) {
+            state.currentImage = img;
+
+            document.querySelectorAll('.image-item').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+
+            setLoading(true, '正在加载对比图...');
+
+            try {
+                const result = await apiRequest('/api/get_comparison', {
+                    method: 'POST',
+                    body: JSON.stringify({ image_name: img.name })
+                });
+
+                if (result.code === 200) {
+                    const data = result.data;
+
+                    document.getElementById('originalImageWrapper').innerHTML =
+                        `<img src="${data.original_image}" alt="原图">`;
+
+                    if (data.detect_image) {
+                        document.getElementById('detectImageWrapper').innerHTML =
+                            `<img src="${data.detect_image}" alt="检测结果">`;
+                    }
+
+                    if (data.real_image) {
+                        document.getElementById('realImageWrapper').innerHTML =
+                            `<img src="${data.real_image}" alt="真实标签">`;
+                    }
+
+                    updateAccuracyDisplay(data);
+                    document.getElementById('contentTitle').textContent = `当前图片: ${img.name}`;
+                }
+            } catch (error) {
+                showToast('加载失败', 'error');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // 变化检测图片选择处理
+        async function handleChangeImageSelection(item) {
+            const imgNum = state.selectingChangeImage;
+
+            // 获取图片URL
+            const imgUrl = `${getServerUrl()}/api/image/${item.path || item.name}`;
+
+            if (imgNum === 1) {
+                state.changeImage1 = item;
+                document.getElementById('changeImage1Wrapper').innerHTML = `
+                    <img src="${imgUrl}" alt="${item.name}">
+                    <span class="selected-indicator">✓ 图片1</span>
+                    <button class="image-select-btn" onclick="selectChangeImage(1)">重新选择</button>
+                `;
+            } else {
+                state.changeImage2 = item;
+                document.getElementById('changeImage2Wrapper').innerHTML = `
+                    <img src="${imgUrl}" alt="${item.name}">
+                    <span class="selected-indicator">✓ 图片2</span>
+                    <button class="image-select-btn" onclick="selectChangeImage(2)">重新选择</button>
+                `;
+            }
+
+            state.selectingChangeImage = 0;
+            showToast(`已选择图片${imgNum}: ${item.name}`, 'success');
+
+            // 如果两张图都选好了，自动执行变化检测
+            if (state.changeImage1 && state.changeImage2) {
+                await runChangeDetection();
+            }
+        }
+
+        // 运行变化检测
+        async function runChangeDetection() {
+            const algoId = document.getElementById('algorithmSelect').value;
+
+            setLoading(true, '正在进行变化检测...');
+
+            try {
+                const result = await apiRequest('/api/detect_change', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        algorithm_id: parseInt(algoId),
+                        image_path1: state.changeImage1.path || state.changeImage1.name,
+                        image_path2: state.changeImage2.path || state.changeImage2.name
+                    })
+                });
+
+                if (result.code === 200) {
+                    displayChangeResults(result.data);
+                    showToast(`变化检测完成，变化比例: ${result.data.change_ratio}%`, 'success');
+                } else {
+                    showToast(result.message || '检测失败', 'error');
+                }
+            } catch (error) {
+                showToast('检测请求失败', 'error');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // 显示变化检测结果
+        function displayChangeResults(data) {
+            document.getElementById('changeMaskWrapper').innerHTML =
+                `<img src="${data.mask_image}" alt="变化掩码">`;
+            document.getElementById('changeResultWrapper').innerHTML =
+                `<img src="${data.result_image}" alt="叠加结果">`;
+
+            document.getElementById('changeRatio').textContent = `${data.change_ratio}%`;
+            document.getElementById('changeRatio').className =
+                data.change_ratio > 10 ? 'change-stat-value warning' : 'change-stat-value';
+            document.getElementById('changeDetectTime').textContent = `${(data.detect_time * 1000).toFixed(0)}ms`;
+            document.getElementById('changeImageSize').textContent = `${data.image_width}×${data.image_height}`;
+
+            document.getElementById('changeResultsSection').style.display = 'block';
+            document.getElementById('contentTitle').textContent = `变化检测 - 变化比例: ${data.change_ratio}%`;
+        }
+
+        // 清除结果
+        function clearResults() {
+            document.getElementById('originalImageWrapper').innerHTML = `
+                <div class="placeholder"><div class="placeholder-icon">📷</div><div>请从左侧选择图片</div></div>
+            `;
+            document.getElementById('detectImageWrapper').innerHTML = `
+                <div class="placeholder"><div class="placeholder-icon">🎯</div><div>模型推理后的检测结果</div></div>
+            `;
+            document.getElementById('realImageWrapper').innerHTML = `
+                <div class="placeholder"><div class="placeholder-icon">✅</div><div>根据真实标签绘制的框</div></div>
+            `;
+            document.getElementById('accuracyDisplay').classList.remove('show');
+            document.getElementById('progressSection').classList.remove('show');
+            document.getElementById('resultsSummary').classList.remove('show');
+            document.getElementById('statsBar').style.display = 'none';
+
+            // 变化检测清理
+            state.changeImage1 = null;
+            state.changeImage2 = null;
+            state.selectingChangeImage = 0;
+
+            document.getElementById('changeImage1Wrapper').innerHTML = `
+                <div class="placeholder"><div class="placeholder-icon">📷</div><div>点击下方按钮选择图片1</div></div>
+                <button class="image-select-btn" onclick="selectChangeImage(1)">选择图片1</button>
+            `;
+            document.getElementById('changeImage2Wrapper').innerHTML = `
+                <div class="placeholder"><div class="placeholder-icon">📷</div><div>点击下方按钮选择图片2</div></div>
+                <button class="image-select-btn" onclick="selectChangeImage(2)">选择图片2</button>
+            `;
+            document.getElementById('changeMaskWrapper').innerHTML = `
+                <div class="placeholder"><div class="placeholder-icon">🎭</div><div>检测后显示变化区域</div></div>
+            `;
+            document.getElementById('changeResultWrapper').innerHTML = `
+                <div class="placeholder"><div class="placeholder-icon">🎯</div><div>检测后显示叠加结果</div></div>
+            `;
+            document.getElementById('changeResultsSection').style.display = 'none';
+
+            document.getElementById('contentTitle').textContent = '检测结果';
+        }
+
+        async function refreshData() {
+            state.currentImage = null;
+            state.batchResults = null;
+            clearResults();
+
+            document.getElementById('imageList').innerHTML = '<div class="placeholder" style="padding: 20px;">请先进行批量检测</div>';
+            document.getElementById('saveResultsBtn').disabled = true;
+
+            setLoading(true, '正在连接服务器...');
+
+            try {
+                const algoSuccess = await loadAlgorithms();
+
+                if (algoSuccess) {
+                    updateConnectionStatus(true);
+                    showToast(`已连接到 ${getServerUrl()}`, 'success');
+                } else {
+                    updateConnectionStatus(false);
+                    showToast('连接失败，请检查服务地址', 'error');
+                }
+            } catch (error) {
+                updateConnectionStatus(false);
+                showToast('连接失败', 'error');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('host')) DEFAULT_CONFIG.host = urlParams.get('host');
+            if (urlParams.get('port')) DEFAULT_CONFIG.port = urlParams.get('port');
+
+            loadSettings();
+            await refreshData();
+
+            if (!state.connected) showSettings();
+        });
+
+        document.getElementById('settingsModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('settingsModal')) hideSettings();
+        });
+
+        // 键盘导航：上下键切换图片
+        document.addEventListener('keydown', (e) => {
+            if (state.currentMode !== 'view' || !state.filteredImages.length) return;
+            
+            let currentIdx = state.currentImage 
+                ? state.filteredImages.findIndex(img => img.name === state.currentImage.name)
+                : -1;
+
+            if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+                e.preventDefault();
+                const nextIdx = Math.min(currentIdx + 1, state.filteredImages.length - 1);
+                if (nextIdx !== currentIdx && nextIdx >= 0) selectResultDirImage(nextIdx);
+            } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                e.preventDefault();
+                const prevIdx = Math.max(currentIdx - 1, 0);
+                if (prevIdx !== currentIdx) selectResultDirImage(prevIdx);
+            }
+        });
+
+        // 回车键加载结果目录
+        document.getElementById('resultDirInput')?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') loadResultDir();
+        });
+    </script>
+</body>
+</html>

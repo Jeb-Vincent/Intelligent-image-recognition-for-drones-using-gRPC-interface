@@ -1,0 +1,121 @@
+// detection.proto
+// 检测服务 Protocol Buffers 定义
+// 
+// 编译命令:
+// python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. detection.proto
+
+syntax = "proto3";
+
+package detection;
+
+// ============================================================
+// 检测服务定义
+// ============================================================
+service DetectionService {
+  // 通用检测接口
+  rpc Detect(DetectRequest) returns (DetectResponse);
+  
+  // 变化检测接口（algorithm_id=13）
+  rpc DetectChange(ChangeDetectRequest) returns (ChangeDetectResponse);
+  
+  // 健康检查
+  rpc HealthCheck(HealthRequest) returns (HealthResponse);
+  
+  // 获取版本信息
+  rpc GetVersion(VersionRequest) returns (VersionResponse);
+}
+
+// ============================================================
+// 通用检测请求（目标检测类算法）
+// ============================================================
+message DetectRequest {
+  int32 algorithm_id = 1;           // 算法ID
+  string image = 2;                 // 图片（base64编码，不含data:前缀）
+  float conf_threshold = 3;         // 置信度阈值
+}
+
+// ============================================================
+// 变化检测请求（algorithm_id=13）
+// 输入: 两张PNG图片，base64编码
+// ============================================================
+message ChangeDetectRequest {
+  string image1 = 1;                // 第一张PNG图片（base64编码）
+  string image2 = 2;                // 第二张PNG图片（base64编码）
+}
+
+// ============================================================
+// 变化检测响应
+// 输出: PNG格式的mask图片，base64编码
+// ============================================================
+message ChangeDetectResponse {
+  int32 code = 1;                   // 状态码 (200=成功)
+  string message = 2;               // 状态消息
+  string mask = 3;                  // 变化掩码PNG图片（base64编码）
+                                    // 像素值: 0=无变化(黑色), 255=有变化(白色)
+  int32 width = 4;                  // 图片宽度
+  int32 height = 5;                 // 图片高度
+  float change_ratio = 6;           // 变化区域占比 (0.0 ~ 1.0)
+  float detect_time = 7;            // 推理耗时（秒）
+}
+
+// ============================================================
+// 通用检测响应（目标检测类算法）
+// ============================================================
+message Detection {
+  int32 class_id = 1;               // 类别ID
+  string class_name = 2;            // 类别英文名
+  string class_name_cn = 3;         // 类别中文名
+  float confidence = 4;             // 置信度
+  repeated float bbox = 5;          // 边界框 [x1, y1, x2, y2] 归一化坐标
+  
+  // 车牌识别相关字段（仅算法5使用）
+  string plate_number = 6;          // 车牌号
+  string plate_type = 7;            // 车牌类型
+  float plate_confidence = 8;       // 车牌识别置信度
+}
+
+message DetectionData {
+  int32 algorithm_id = 1;           // 算法ID
+  string algorithm_name = 2;        // 算法名称
+  repeated Detection detections = 3; // 检测结果列表
+  int32 total_count = 4;            // 检测总数
+  float detect_time = 5;            // 检测耗时（秒）
+}
+
+message DetectResponse {
+  int32 code = 1;                   // 状态码 (200=成功)
+  string message = 2;               // 状态消息
+  DetectionData data = 3;           // 检测数据
+}
+
+// ============================================================
+// 健康检查
+// ============================================================
+message HealthRequest {}
+
+message HealthResponse {
+  string status = 1;
+  string device = 2;
+  string yolov5_repo = 3;
+  int32 models_cached = 4;
+  string image_backend = 5;
+  string gpu_name = 6;
+  float gpu_memory_allocated_mb = 7;
+  float gpu_memory_reserved_mb = 8;
+}
+
+// ============================================================
+// 版本信息
+// ============================================================
+message VersionRequest {}
+
+message VersionResponse {
+  string version = 1;
+  string mode = 2;
+  string pytorch_version = 3;
+  string opencv_version = 4;
+  string device = 5;
+  bool cuda_available = 6;
+  float default_conf_threshold = 7;
+  repeated int32 algo_supported = 8;
+}

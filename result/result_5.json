@@ -1,0 +1,24 @@
+{
+  "code": 200,
+  "message": "success",
+  "algorithm_id": 5,
+  "algorithm_name": "车牌识别",
+  "detect_time": 0.014999999664723873,
+  "total_count": 1,
+  "detections": [
+    {
+      "class_id": 0,
+      "class_name": "license_plate",
+      "class_name_cn": "车牌",
+      "confidence": 0.97705078125,
+      "bbox": [
+        0.37154701352119446,
+        0.3862549960613251,
+        0.6555370092391968,
+        0.47702598571777344
+      ],
+      "plate_number": "皖AFY002",
+      "plate_type": "蓝牌"
+    }
+  ]
+}

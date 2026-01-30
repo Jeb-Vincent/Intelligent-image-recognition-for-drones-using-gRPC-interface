@@ -1,0 +1,66 @@
+{
+  "code": 200,
+  "message": "success",
+  "algorithm_id": 22,
+  "algorithm_name": "罂粟识别",
+  "detect_time": 0.014000000432133675,
+  "total_count": 4,
+  "detections": [
+    {
+      "class_id": 0,
+      "class_name": "poppy-opium",
+      "class_name_cn": "罂粟",
+      "confidence": 0.96435546875,
+      "bbox": [
+        0.23740200698375702,
+        0.7382810115814209,
+        0.5571290254592896,
+        1.0
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "poppy-opium",
+      "class_name_cn": "罂粟",
+      "confidence": 0.94482421875,
+      "bbox": [
+        0.8214359879493713,
+        0.004296999890357256,
+        1.0,
+        0.7257810235023499
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "poppy-opium",
+      "class_name_cn": "罂粟",
+      "confidence": 0.89013671875,
+      "bbox": [
+        0.33769500255584717,
+        0.0005859999801032245,
+        0.5544919967651367,
+        0.6732419729232788
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "poppy-opium",
+      "class_name_cn": "罂粟",
+      "confidence": 0.875,
+      "bbox": [
+        0.5579100251197815,
+        0.0009769999887794256,
+        0.6772459745407104,
+        0.7166020274162292
+      ],
+      "plate_number": null,
+      "plate_type": null
+    }
+  ]
+}

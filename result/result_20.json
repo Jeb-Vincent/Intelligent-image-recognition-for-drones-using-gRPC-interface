@@ -1,0 +1,94 @@
+{
+  "code": 200,
+  "message": "success",
+  "algorithm_id": 20,
+  "algorithm_name": "园区夜间入侵检测",
+  "detect_time": 0.014999999664723873,
+  "total_count": 6,
+  "detections": [
+    {
+      "class_id": 1,
+      "class_name": "car",
+      "class_name_cn": "车",
+      "confidence": 0.9472911357879639,
+      "bbox": [
+        0.048144999891519547,
+        0.4280399978160858,
+        0.2823239862918854,
+        0.6100460290908813
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "car",
+      "class_name_cn": "车",
+      "confidence": 0.9101998805999756,
+      "bbox": [
+        0.6422849893569946,
+        0.3566890060901642,
+        0.9624019861221313,
+        0.6501460075378418
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "car",
+      "class_name_cn": "车",
+      "confidence": 0.8565845489501953,
+      "bbox": [
+        0.25485798716545105,
+        0.42816200852394104,
+        0.32014200091362,
+        0.5132449865341187
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "car",
+      "class_name_cn": "车",
+      "confidence": 0.8223521709442139,
+      "bbox": [
+        0.5042110085487366,
+        0.44474801421165466,
+        0.5528200268745422,
+        0.4917759895324707
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "car",
+      "class_name_cn": "车",
+      "confidence": 0.5056123733520508,
+      "bbox": [
+        0.3937009871006012,
+        0.44335898756980896,
+        0.4187990128993988,
+        0.4736329913139343
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "car",
+      "class_name_cn": "车",
+      "confidence": 0.3607313632965088,
+      "bbox": [
+        0.45592001080513,
+        0.4399870038032532,
+        0.47923600673675537,
+        0.4613800048828125
+      ],
+      "plate_number": null,
+      "plate_type": null
+    }
+  ]
+}

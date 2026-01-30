@@ -1,0 +1,24 @@
+{
+  "code": 200,
+  "message": "success",
+  "algorithm_id": 1,
+  "algorithm_name": "松线虫害识别",
+  "detect_time": 0.017000000923871994,
+  "total_count": 1,
+  "detections": [
+    {
+      "class_id": 1,
+      "class_name": "heavy",
+      "class_name_cn": "重度患病",
+      "confidence": 0.9438748359680176,
+      "bbox": [
+        0.614404022693634,
+        0.06710100173950195,
+        0.7863770127296448,
+        0.40325701236724854
+      ],
+      "plate_number": null,
+      "plate_type": null
+    }
+  ]
+}

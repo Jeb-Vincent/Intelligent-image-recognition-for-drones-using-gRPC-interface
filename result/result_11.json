@@ -1,0 +1,136 @@
+{
+  "code": 200,
+  "message": "success",
+  "algorithm_id": 11,
+  "algorithm_name": "施工识别",
+  "detect_time": 0.017000000923871994,
+  "total_count": 9,
+  "detections": [
+    {
+      "class_id": 0,
+      "class_name": "crane",
+      "class_name_cn": "起重机",
+      "confidence": 0.903367280960083,
+      "bbox": [
+        0.7322019934654236,
+        0.42804598808288574,
+        0.7826420068740845,
+        0.5558879971504211
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "excavator",
+      "class_name_cn": "挖掘机",
+      "confidence": 0.8879108428955078,
+      "bbox": [
+        0.2174070030450821,
+        0.5515789985656738,
+        0.291577011346817,
+        0.6332989931106567
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "crane",
+      "class_name_cn": "起重机",
+      "confidence": 0.8498992919921875,
+      "bbox": [
+        0.929394006729126,
+        0.29058900475502014,
+        0.9612299799919128,
+        0.550603985786438
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 3,
+      "class_name": "truck",
+      "class_name_cn": "卡车",
+      "confidence": 0.802342414855957,
+      "bbox": [
+        0.15625,
+        0.444133996963501,
+        0.18828099966049194,
+        0.47328001260757446
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 3,
+      "class_name": "truck",
+      "class_name_cn": "卡车",
+      "confidence": 0.7512922286987305,
+      "bbox": [
+        0.18261699378490448,
+        0.4188860058784485,
+        0.20410199463367462,
+        0.4472520053386688
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "crane",
+      "class_name_cn": "起重机",
+      "confidence": 0.7435436248779297,
+      "bbox": [
+        0.9769350290298462,
+        0.32731398940086365,
+        0.9996280074119568,
+        0.5873280167579651
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "excavator",
+      "class_name_cn": "挖掘机",
+      "confidence": 0.6510257720947266,
+      "bbox": [
+        0.7250369787216187,
+        0.41155698895454407,
+        0.7515259981155396,
+        0.4379520118236542
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 2,
+      "class_name": "tractor",
+      "class_name_cn": "拖拉机",
+      "confidence": 0.6428852081298828,
+      "bbox": [
+        0.1924619972705841,
+        0.4243209958076477,
+        0.21027199923992157,
+        0.4542900025844574
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 2,
+      "class_name": "tractor",
+      "class_name_cn": "拖拉机",
+      "confidence": 0.541510820388794,
+      "bbox": [
+        0.8927189707756042,
+        0.4461910128593445,
+        0.905718982219696,
+        0.47815200686454773
+      ],
+      "plate_number": null,
+      "plate_type": null
+    }
+  ]
+}

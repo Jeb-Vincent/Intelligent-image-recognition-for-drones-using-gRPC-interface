@@ -1,0 +1,52 @@
+{
+  "code": 200,
+  "message": "success",
+  "algorithm_id": 3,
+  "algorithm_name": "漂浮物识别",
+  "detect_time": 0.017000000923871994,
+  "total_count": 3,
+  "detections": [
+    {
+      "class_id": 4,
+      "class_name": "plastic-bag",
+      "class_name_cn": "塑料袋",
+      "confidence": 0.8519887924194336,
+      "bbox": [
+        0.5215330123901367,
+        0.5587890148162842,
+        0.6315919756889343,
+        0.7974609732627869
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "bottle",
+      "class_name_cn": "瓶子",
+      "confidence": 0.6946334838867188,
+      "bbox": [
+        0.598779022693634,
+        0.32260701060295105,
+        0.6715329885482788,
+        0.5187990069389343
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "bottle",
+      "class_name_cn": "瓶子",
+      "confidence": 0.6017568111419678,
+      "bbox": [
+        0.5542969703674316,
+        0.11084000021219254,
+        0.6386719942092896,
+        0.30322301387786865
+      ],
+      "plate_number": null,
+      "plate_type": null
+    }
+  ]
+}

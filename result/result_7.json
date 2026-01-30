@@ -1,0 +1,234 @@
+{
+  "code": 200,
+  "message": "success",
+  "algorithm_id": 7,
+  "algorithm_name": "路面破损识别",
+  "detect_time": 0.028999999165534973,
+  "total_count": 16,
+  "detections": [
+    {
+      "class_id": 0,
+      "class_name": "Alligator Crack",
+      "class_name_cn": "龟裂",
+      "confidence": 0.869140625,
+      "bbox": [
+        0.39130398631095886,
+        0.002773999935016036,
+        0.4463309943675995,
+        0.14351199567317963
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "Alligator Crack",
+      "class_name_cn": "龟裂",
+      "confidence": 0.86474609375,
+      "bbox": [
+        0.45244601368904114,
+        0.06374499946832657,
+        0.6711959838867188,
+        0.17629100382328033
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "Longitudinal Crack",
+      "class_name_cn": "纵向裂缝",
+      "confidence": 0.8154296875,
+      "bbox": [
+        0.5320990085601807,
+        0.7681159973144531,
+        0.5806729793548584,
+        0.9836959838867188
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "Longitudinal Crack",
+      "class_name_cn": "纵向裂缝",
+      "confidence": 0.77197265625,
+      "bbox": [
+        0.587805986404419,
+        0.8002719879150391,
+        0.6486070156097412,
+        0.8374090194702148
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 2,
+      "class_name": "Longitudinal Patch",
+      "class_name_cn": "纵向修补块",
+      "confidence": 0.74755859375,
+      "bbox": [
+        0.6720449924468994,
+        0.12477400153875351,
+        0.7409989833831787,
+        0.1578350067138672
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "Longitudinal Crack",
+      "class_name_cn": "纵向裂缝",
+      "confidence": 0.73388671875,
+      "bbox": [
+        0.4259510040283203,
+        0.5052080154418945,
+        0.4646739959716797,
+        0.6125450134277344
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "Longitudinal Crack",
+      "class_name_cn": "纵向裂缝",
+      "confidence": 0.70068359375,
+      "bbox": [
+        0.5118889808654785,
+        0.31453800201416016,
+        0.5478940010070801,
+        0.3666209876537323
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "Longitudinal Crack",
+      "class_name_cn": "纵向裂缝",
+      "confidence": 0.693359375,
+      "bbox": [
+        0.48607298731803894,
+        0.5622739791870117,
+        0.5519700050354004,
+        0.6134510040283203
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "Longitudinal Crack",
+      "class_name_cn": "纵向裂缝",
+      "confidence": 0.68505859375,
+      "bbox": [
+        0.4023439884185791,
+        0.8066120147705078,
+        0.4441240131855011,
+        0.8781700134277344
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "Longitudinal Crack",
+      "class_name_cn": "纵向裂缝",
+      "confidence": 0.65478515625,
+      "bbox": [
+        0.611752986907959,
+        0.660099983215332,
+        0.6762909889221191,
+        0.7022190093994141
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "Longitudinal Crack",
+      "class_name_cn": "纵向裂缝",
+      "confidence": 0.65234375,
+      "bbox": [
+        0.9714670181274414,
+        0.5101900100708008,
+        0.9945650100708008,
+        0.9952449798583984
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "Longitudinal Crack",
+      "class_name_cn": "纵向裂缝",
+      "confidence": 0.5947265625,
+      "bbox": [
+        0.4167799949645996,
+        0.6838769912719727,
+        0.4493890106678009,
+        0.8061590194702148
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "Longitudinal Crack",
+      "class_name_cn": "纵向裂缝",
+      "confidence": 0.5166015625,
+      "bbox": [
+        0.432574987411499,
+        0.36028099060058594,
+        0.46823999285697937,
+        0.4984149932861328
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 2,
+      "class_name": "Longitudinal Patch",
+      "class_name_cn": "纵向修补块",
+      "confidence": 0.462890625,
+      "bbox": [
+        0.05553700029850006,
+        0.8405799865722656,
+        0.2068610042333603,
+        0.8840579986572266
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "Longitudinal Crack",
+      "class_name_cn": "纵向裂缝",
+      "confidence": 0.435791015625,
+      "bbox": [
+        0.4427649974822998,
+        0.6225090026855469,
+        0.47571301460266113,
+        0.6908969879150391
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 2,
+      "class_name": "Longitudinal Patch",
+      "class_name_cn": "纵向修补块",
+      "confidence": 0.38671875,
+      "bbox": [
+        0.0006370000191964209,
+        0.16904400289058685,
+        0.07536499947309494,
+        0.19508600234985352
+      ],
+      "plate_number": null,
+      "plate_type": null
+    }
+  ]
+}

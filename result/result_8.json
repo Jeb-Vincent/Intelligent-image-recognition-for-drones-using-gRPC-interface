@@ -1,0 +1,24 @@
+{
+  "code": 200,
+  "message": "success",
+  "algorithm_id": 8,
+  "algorithm_name": "路面污染",
+  "detect_time": 0.026000000536441803,
+  "total_count": 1,
+  "detections": [
+    {
+      "class_id": 1,
+      "class_name": "BROKEN_SIGNAGE",
+      "class_name_cn": "破损标识牌",
+      "confidence": 0.7431640625,
+      "bbox": [
+        0.6812160015106201,
+        0.012397999875247478,
+        0.77394700050354,
+        0.1289059966802597
+      ],
+      "plate_number": null,
+      "plate_type": null
+    }
+  ]
+}

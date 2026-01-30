@@ -1,0 +1,52 @@
+{
+  "code": 200,
+  "message": "success",
+  "algorithm_id": 14,
+  "algorithm_name": "占道经营识别",
+  "detect_time": 0.026000000536441803,
+  "total_count": 3,
+  "detections": [
+    {
+      "class_id": 0,
+      "class_name": "zdjy",
+      "class_name_cn": "占道经营",
+      "confidence": 0.7470703125,
+      "bbox": [
+        0.6275479793548584,
+        0.2064090073108673,
+        0.6591370105743408,
+        0.2591710090637207
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "zdjy",
+      "class_name_cn": "占道经营",
+      "confidence": 0.6103515625,
+      "bbox": [
+        0.5,
+        0.5446109771728516,
+        0.5604619979858398,
+        0.6220560073852539
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "zdjy",
+      "class_name_cn": "占道经营",
+      "confidence": 0.56005859375,
+      "bbox": [
+        0.0,
+        0.6456069946289062,
+        0.1351899951696396,
+        0.7058420181274414
+      ],
+      "plate_number": null,
+      "plate_type": null
+    }
+  ]
+}

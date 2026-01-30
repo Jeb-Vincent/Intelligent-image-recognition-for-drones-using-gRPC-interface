@@ -1,0 +1,52 @@
+{
+  "code": 200,
+  "message": "success",
+  "algorithm_id": 12,
+  "algorithm_name": "秸秆焚烧",
+  "detect_time": 0.026000000536441803,
+  "total_count": 3,
+  "detections": [
+    {
+      "class_id": 0,
+      "class_name": "straw",
+      "class_name_cn": "秸秆堆",
+      "confidence": 0.9228515625,
+      "bbox": [
+        0.927649974822998,
+        0.7108389735221863,
+        0.9527850151062012,
+        0.7412030100822449
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "straw",
+      "class_name_cn": "秸秆堆",
+      "confidence": 0.92041015625,
+      "bbox": [
+        0.7197690010070801,
+        0.6405929923057556,
+        0.7421879768371582,
+        0.6682379841804504
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "straw",
+      "class_name_cn": "秸秆堆",
+      "confidence": 0.91162109375,
+      "bbox": [
+        0.7972149848937988,
+        0.6931639909744263,
+        0.8250679969787598,
+        0.7280600070953369
+      ],
+      "plate_number": null,
+      "plate_type": null
+    }
+  ]
+}

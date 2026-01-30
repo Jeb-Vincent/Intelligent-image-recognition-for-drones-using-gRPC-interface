@@ -1,0 +1,24 @@
+{
+  "code": 200,
+  "message": "success",
+  "algorithm_id": 24,
+  "algorithm_name": "林业侵占",
+  "detect_time": 0.017999999225139618,
+  "total_count": 1,
+  "detections": [
+    {
+      "class_id": 2,
+      "class_name": "concrete_mixer_truck",
+      "class_name_cn": "混凝土搅拌车",
+      "confidence": 0.9536576271057129,
+      "bbox": [
+        0.16230499744415283,
+        0.25133100152015686,
+        0.6337890028953552,
+        0.8177710175514221
+      ],
+      "plate_number": null,
+      "plate_type": null
+    }
+  ]
+}

@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>演示系统</title>
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --primary-hover: #4f46e5;
+            --primary-light: #eef2ff;
+            --accent-color: #10b981;
+            --accent-hover: #059669;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1f2937;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #312e81 0%, #4338ca 50%, #6366f1 100%);
+            color: white;
+            padding: 20px 40px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left h1 { font-size: 24px; font-weight: 600; letter-spacing: 0.5px; }
+        .header-left p { font-size: 14px; opacity: 0.9; margin-top: 5px; }
+        .header-right { display: flex; align-items: center; gap: 12px; }
+
+        .status-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .status-badge.connected { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
+        .status-badge.disconnected { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+
+        .settings-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+            backdrop-filter: blur(4px);
+        }
+        .settings-btn:hover { background: rgba(255, 255, 255, 0.25); transform: translateY(-1px); }
+
+        .config-bar {
+            background: var(--card-bg);
+            padding: 16px 40px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        }
+
+        .config-item { display: flex; align-items: center; gap: 10px; }
+        .config-item label { font-size: 14px; color: var(--text-muted); white-space: nowrap; font-weight: 500; }
+        .config-item input {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 14px;
+            width: 80px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .config-item input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        .config-item select {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 14px;
+            min-width: 220px;
+            background: white;
+            cursor: pointer;
+        }
+        .config-item select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .main-container {
+            display: flex;
+            padding: 24px;
+            gap: 24px;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        .sidebar { width: 300px; flex-shrink: 0; }
+        .sidebar-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+        .sidebar-title {
+            padding: 16px 20px;
+            font-size: 15px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-color);
+        }
+
+        .folder-list, .image-list { max-height: 380px; overflow-y: auto; }
+
+        .folder-input-wrapper {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            gap: 8px;
+            background: #fafbfc;
+        }
+        .folder-input {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .folder-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        .folder-load-btn {
+            padding: 10px 16px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
+        }
+        .folder-load-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(99, 102, 241, 0.3);
+        }
+
+        .folder-item {
+            padding: 14px 20px;
+            cursor: pointer;
+            border-bottom: 1px solid #f3f4f6;
+            transition: all 0.15s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .folder-item:hover { background: var(--primary-light); }
+        .folder-item.active {
+            background: var(--primary-light);
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .image-item {
+            padding: 10px 14px;
+            cursor: pointer;
+            border-bottom: 1px solid #f3f4f6;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .image-item:hover { background: var(--primary-light); }
+        .image-item.active {
+            background: var(--primary-light);
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .image-thumb {
+            width: 50px;
+            height: 50px;
+            border-radius: 4px;
+            object-fit: cover;
+            background: #e9ecef;
+            flex-shrink: 0;
+        }
+
+        .image-info {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .folder-name {
+            font-size: 14px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex: 1;
+        }
+        .image-name {
+            font-size: 13px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .folder-count {
+            font-size: 12px;
+            color: var(--text-muted);
+            background: #e9ecef;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+        .image-size { font-size: 11px; color: var(--text-muted); }
+
+        .content { flex: 1; min-width: 0; }
+        .content-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        .content-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .content-title { font-size: 16px; font-weight: 600; }
+
+        .detect-btn {
+            padding: 8px 24px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .detect-btn:hover { background: var(--primary-hover); }
+        .detect-btn:disabled { background: #ccc; cursor: not-allowed; }
+
+        .image-container { display: flex; gap: 20px; padding: 20px; }
+        .image-box { flex: 1; min-width: 0; }
+        .image-box-title { font-size: 14px; color: var(--text-muted); margin-bottom: 10px; text-align: center; }
+        .image-wrapper {
+            background: #f0f0f0;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .image-wrapper img { max-width: 100%; max-height: 600px; object-fit: contain; }
+
+        .placeholder { color: var(--text-muted); font-size: 14px; text-align: center; }
+        .placeholder-icon { font-size: 48px; margin-bottom: 10px; }
+
+        .results-section { padding: 20px; border-top: 1px solid var(--border-color); }
+        .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .results-title { font-size: 16px; font-weight: 600; }
+        .results-stats { display: flex; gap: 20px; }
+        .stat-item { font-size: 14px; }
+        .stat-label { color: var(--text-muted); }
+        .stat-value { font-weight: 600; color: var(--primary-color); }
+
+        .results-table { width: 100%; border-collapse: collapse; }
+        .results-table th, .results-table td {
+            padding: 10px 15px;
+            text-align: left;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+        }
+        .results-table th { background: #f8f9fa; font-weight: 600; color: var(--text-muted); }
+        .results-table tr:hover { background: #f8f9fa; }
+
+        .confidence-bar {
+            width: 60px; height: 6px;
+            background: #e9ecef;
+            border-radius: 3px;
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+        .confidence-fill { height: 100%; background: var(--success-color); border-radius: 3px; }
+        .class-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            background: #e8f4fd;
+            color: var(--primary-color);
+        }
+
+        /* 设置弹窗 */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.show { display: flex; }
+
+        .modal {
+            background: white;
+            border-radius: 8px;
+            width: 500px;
+            max-width: 90%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-title { font-size: 18px; font-weight: 600; }
+        .modal-close { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-muted); }
+        .modal-body { padding: 20px; }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500; }
+        .form-group input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .form-group input:focus { outline: none; border-color: var(--primary-color); }
+        .form-group .help-text { font-size: 12px; color: var(--text-muted); margin-top: 5px; }
+
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        .modal-footer button { padding: 8px 20px; border-radius: 4px; font-size: 14px; cursor: pointer; }
+        .btn-cancel { background: #f0f0f0; border: 1px solid var(--border-color); color: var(--text-color); }
+        .btn-save { background: var(--primary-color); border: none; color: white; }
+        .btn-save:hover { background: var(--primary-hover); }
+
+        /* 加载动画 */
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .loading.show { display: flex; }
+
+        .spinner {
+            width: 50px; height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loading-text { margin-top: 15px; color: var(--text-muted); font-size: 14px; }
+
+        /* 提示消息 */
+        .toast {
+            position: fixed;
+            bottom: 20px; right: 20px;
+            padding: 12px 24px;
+            background: #333;
+            color: white;
+            border-radius: 4px;
+            font-size: 14px;
+            z-index: 1001;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s;
+        }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .toast.error { background: var(--danger-color); }
+        .toast.success { background: var(--success-color); }
+
+        /* 变化检测模式 */
+        .change-detection-mode .image-container { flex-wrap: wrap; }
+        .change-detection-mode .image-box { min-width: 280px; flex: 1 1 45%; }
+        .change-detection-mode .image-box.full-width { flex: 1 1 100%; }
+
+        .image-select-btn {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 8px 16px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            z-index: 10;
+        }
+        .image-select-btn:hover { background: rgba(0, 0, 0, 0.85); }
+
+        .selected-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--success-color);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .change-stats {
+            display: flex;
+            gap: 30px;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        .change-stat-item {
+            text-align: center;
+        }
+        .change-stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+        .change-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        .change-stat-value.warning { color: var(--danger-color); }
+
+        @media (max-width: 1200px) { .image-container { flex-direction: column; } }
+        @media (max-width: 768px) {
+            .main-container { flex-direction: column; }
+            .sidebar { width: 100%; }
+            .config-bar { padding: 15px 20px; }
+            .header { flex-direction: column; gap: 15px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <h1>🎯 演示系统</h1>
+            <p>可视化演示</p>
+        </div>
+        <div class="header-right">
+            <span class="status-badge disconnected" id="statusBadge">● 未连接</span>
+            <button class="settings-btn" onclick="showSettings()">⚙️ 设置</button>
+        </div>
+    </header>
+
+    <div class="config-bar">
+        <div class="config-item">
+            <label>算法:</label>
+            <select id="algorithmSelect"><option value="">-- 选择算法 --</option></select>
+        </div>
+        <div class="config-item">
+            <label>置信度:</label>
+            <input type="number" id="confThreshold" value="0.25" min="0" max="1" step="0.05">
+        </div>
+        <div class="config-item">
+            <label>IOU:</label>
+            <input type="number" id="iouThreshold" value="0.45" min="0" max="1" step="0.05">
+        </div>
+        <button class="detect-btn" onclick="refreshData()">🔄 刷新数据</button>
+    </div>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title">📁 图片文件夹</div>
+                <div class="folder-input-wrapper">
+                    <input type="text" id="imageDirInput" placeholder="输入图片目录路径，如: D:/test_images" class="folder-input">
+                    <button class="folder-load-btn" onclick="loadImageDir()">加载</button>
+                </div>
+                <div class="folder-list" id="folderList">
+                    <div class="placeholder" style="padding: 20px;">请输入图片目录路径并点击加载</div>
+                </div>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-title">🖼️ 图片列表</div>
+                <div class="image-list" id="imageList">
+                    <div class="placeholder" style="padding: 20px;">请先选择文件夹</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="content-card" id="contentCard">
+                <div class="content-header">
+                    <div class="content-title" id="contentTitle">检测结果</div>
+                    <button class="detect-btn" id="detectBtn" onclick="runDetection()" disabled>🔍 开始检测</button>
+                </div>
+
+                <!-- 普通检测模式 -->
+                <div class="image-container" id="normalModeContainer">
+                    <div class="image-box">
+                        <div class="image-box-title">原始图片</div>
+                        <div class="image-wrapper" id="originalImageWrapper">
+                            <div class="placeholder">
+                                <div class="placeholder-icon">📷</div>
+                                <div>请从左侧选择图片</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image-box">
+                        <div class="image-box-title">检测结果</div>
+                        <div class="image-wrapper" id="resultImageWrapper">
+                            <div class="placeholder">
+                                <div class="placeholder-icon">🎯</div>
+                                <div>点击"开始检测"查看结果</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 变化检测模式 -->
+                <div class="image-container" id="changeModeContainer" style="display: none; flex-wrap: wrap;">
+                    <div class="image-box" style="flex: 1 1 45%; min-width: 280px;">
+                        <div class="image-box-title">图片1（时相1）</div>
+                        <div class="image-wrapper" id="changeImage1Wrapper" style="position: relative;">
+                            <div class="placeholder">
+                                <div class="placeholder-icon">📷</div>
+                                <div>点击下方按钮选择图片1</div>
+                            </div>
+                            <button class="image-select-btn" onclick="selectChangeImage(1)">选择图片1</button>
+                        </div>
+                    </div>
+                    <div class="image-box" style="flex: 1 1 45%; min-width: 280px;">
+                        <div class="image-box-title">图片2（时相2）</div>
+                        <div class="image-wrapper" id="changeImage2Wrapper" style="position: relative;">
+                            <div class="placeholder">
+                                <div class="placeholder-icon">📷</div>
+                                <div>点击下方按钮选择图片2</div>
+                            </div>
+                            <button class="image-select-btn" onclick="selectChangeImage(2)">选择图片2</button>
+                        </div>
+                    </div>
+                    <div class="image-box" style="flex: 1 1 45%; min-width: 280px;">
+                        <div class="image-box-title">变化掩码</div>
+                        <div class="image-wrapper" id="changeMaskWrapper">
+                            <div class="placeholder">
+                                <div class="placeholder-icon">🎭</div>
+                                <div>检测后显示变化区域</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image-box" style="flex: 1 1 45%; min-width: 280px;">
+                        <div class="image-box-title">叠加结果</div>
+                        <div class="image-wrapper" id="changeResultWrapper">
+                            <div class="placeholder">
+                                <div class="placeholder-icon">🎯</div>
+                                <div>检测后显示叠加结果</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 变化检测结果统计 -->
+                <div class="results-section" id="changeResultsSection" style="display: none;">
+                    <div class="results-header">
+                        <div class="results-title">变化检测结果</div>
+                    </div>
+                    <div class="change-stats">
+                        <div class="change-stat-item">
+                            <div class="change-stat-label">变化比例</div>
+                            <div class="change-stat-value" id="changeRatio">0%</div>
+                        </div>
+                        <div class="change-stat-item">
+                            <div class="change-stat-label">检测耗时</div>
+                            <div class="change-stat-value" id="changeDetectTime">0ms</div>
+                        </div>
+                        <div class="change-stat-item">
+                            <div class="change-stat-label">图片尺寸</div>
+                            <div class="change-stat-value" id="changeImageSize">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 普通检测结果 -->
+                <div class="results-section" id="resultsSection" style="display: none;">
+                    <div class="results-header">
+                        <div class="results-title">检测详情</div>
+                        <div class="results-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">检测数量:</span>
+                                <span class="stat-value" id="detectionCount">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">耗时:</span>
+                                <span class="stat-value" id="detectTime">0ms</span>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="results-table">
+                        <thead>
+                            <tr><th>#</th><th>类别</th><th>置信度</th><th>边界框 (x1, y1, x2, y2)</th></tr>
+                        </thead>
+                        <tbody id="resultsBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 设置弹窗 -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">⚙️ 服务配置</div>
+                <button class="modal-close" onclick="hideSettings()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>服务器地址</label>
+                    <input type="text" id="settingHost" placeholder="localhost">
+                    <div class="help-text">后端服务的 IP 地址或域名</div>
+                </div>
+                <div class="form-group">
+                    <label>服务端口</label>
+                    <input type="text" id="settingPort" placeholder="8082">
+                    <div class="help-text">后端服务监听的端口号</div>
+                </div>
+                <div class="form-group">
+                    <label>模型目录</label>
+                    <input type="text" id="settingModelDir" placeholder="./">
+                    <div class="help-text">ONNX 模型文件所在目录，如: ./ 或 D:/models</div>
+                </div>
+                <div class="form-group">
+                    <label>默认置信度阈值</label>
+                    <input type="number" id="settingConfThreshold" value="0.25" min="0" max="1" step="0.05">
+                    <div class="help-text">检测置信度阈值，范围 0-1</div>
+                </div>
+                <div class="form-group">
+                    <label>默认 IOU 阈值</label>
+                    <input type="number" id="settingIouThreshold" value="0.45" min="0" max="1" step="0.05">
+                    <div class="help-text">NMS IOU 阈值，范围 0-1</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="hideSettings()">取消</button>
+                <button class="btn-save" onclick="saveSettings()">保存并连接</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <div class="loading-text">正在检测...</div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ============================================================
+        // 默认配置 - 在此处修改默认值
+        // ============================================================
+        const DEFAULT_CONFIG = {
+            host: 'localhost',      // 默认服务器地址
+            port: '8082',           // 默认端口
+            modelDir: './',         // 默认模型目录
+            imageDir: './test_images', // 默认图片目录
+            confThreshold: 0.25,    // 默认置信度阈值
+            iouThreshold: 0.45      // 默认 IOU 阈值
+        };
+
+        // 全局状态
+        const state = {
+            currentFolder: null,
+            currentImage: null,
+            algorithms: [],
+            config: { ...DEFAULT_CONFIG },
+            connected: false,
+            // 变化检测相关
+            isChangeDetection: false,
+            changeImage1: null,
+            changeImage2: null,
+            selectingChangeImage: 0  // 0=不在选择, 1=选择图片1, 2=选择图片2
+        };
+
+        function getServerUrl() {
+            return `http://${state.config.host}:${state.config.port}`;
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast ' + type;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function setLoading(show, text = '正在检测...') {
+            const loading = document.getElementById('loading');
+            loading.querySelector('.loading-text').textContent = text;
+            loading.classList.toggle('show', show);
+        }
+
+        function updateConnectionStatus(connected) {
+            state.connected = connected;
+            const badge = document.getElementById('statusBadge');
+            badge.className = connected ? 'status-badge connected' : 'status-badge disconnected';
+            badge.textContent = connected ? '● 已连接' : '● 未连接';
+        }
+
+        // 切换检测模式
+        function switchDetectionMode(isChangeDetection) {
+            state.isChangeDetection = isChangeDetection;
+
+            const normalContainer = document.getElementById('normalModeContainer');
+            const changeContainer = document.getElementById('changeModeContainer');
+            const resultsSection = document.getElementById('resultsSection');
+            const changeResultsSection = document.getElementById('changeResultsSection');
+
+            if (isChangeDetection) {
+                normalContainer.style.display = 'none';
+                changeContainer.style.display = 'flex';
+                resultsSection.style.display = 'none';
+                changeResultsSection.style.display = 'none';
+                document.getElementById('contentTitle').textContent = '变化检测';
+                // 检查是否两张图都选好了
+                updateChangeDetectButton();
+            } else {
+                normalContainer.style.display = 'flex';
+                changeContainer.style.display = 'none';
+                changeResultsSection.style.display = 'none';
+                document.getElementById('contentTitle').textContent = '检测结果';
+            }
+        }
+
+        // 选择变化检测图片
+        function selectChangeImage(imageNum) {
+            state.selectingChangeImage = imageNum;
+            showToast(`请从左侧图片列表中选择图片${imageNum}`, 'info');
+        }
+
+        // 更新变化检测按钮状态
+        function updateChangeDetectButton() {
+            const detectBtn = document.getElementById('detectBtn');
+            if (state.isChangeDetection) {
+                detectBtn.disabled = !(state.changeImage1 && state.changeImage2);
+            }
+        }
+
+        async function apiRequest(endpoint, options = {}) {
+            const url = getServerUrl() + endpoint;
+            try {
+                const response = await fetch(url, {
+                    ...options,
+                    headers: { 'Content-Type': 'application/json', ...options.headers }
+                });
+                return await response.json();
+            } catch (error) {
+                console.error('API Error:', error);
+                throw error;
+            }
+        }
+
+        function showSettings() {
+            document.getElementById('settingHost').value = state.config.host;
+            document.getElementById('settingPort').value = state.config.port;
+            document.getElementById('settingModelDir').value = state.config.modelDir;
+            document.getElementById('settingConfThreshold').value = state.config.confThreshold;
+            document.getElementById('settingIouThreshold').value = state.config.iouThreshold;
+            document.getElementById('settingsModal').classList.add('show');
+        }
+
+        function hideSettings() {
+            document.getElementById('settingsModal').classList.remove('show');
+        }
+
+        async function saveSettings() {
+            state.config.host = document.getElementById('settingHost').value || DEFAULT_CONFIG.host;
+            state.config.port = document.getElementById('settingPort').value || DEFAULT_CONFIG.port;
+            state.config.modelDir = document.getElementById('settingModelDir').value || DEFAULT_CONFIG.modelDir;
+            state.config.confThreshold = parseFloat(document.getElementById('settingConfThreshold').value) || DEFAULT_CONFIG.confThreshold;
+            state.config.iouThreshold = parseFloat(document.getElementById('settingIouThreshold').value) || DEFAULT_CONFIG.iouThreshold;
+
+            document.getElementById('confThreshold').value = state.config.confThreshold;
+            document.getElementById('iouThreshold').value = state.config.iouThreshold;
+
+            localStorage.setItem('onnx_demo_config', JSON.stringify(state.config));
+            hideSettings();
+            showToast('配置已保存，正在连接...', 'info');
+
+            // 更新服务端模型目录配置
+            try {
+                await apiRequest('/api/config', {
+                    method: 'POST',
+                    body: JSON.stringify({ model_dir: state.config.modelDir })
+                });
+            } catch (e) {}
+
+            await refreshData();
+        }
+
+        // 更新服务端配置
+        async function updateServerConfig() {
+            try {
+                await apiRequest('/api/config', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        model_dir: state.config.modelDir,
+                        image_dir: state.config.imageDir
+                    })
+                });
+            } catch (error) {
+                console.error('更新服务端配置失败:', error);
+            }
+        }
+
+        function loadSettings() {
+            const saved = localStorage.getItem('onnx_demo_config');
+            if (saved) {
+                try {
+                    state.config = { ...DEFAULT_CONFIG, ...JSON.parse(saved) };
+                } catch (e) {}
+            }
+            document.getElementById('confThreshold').value = state.config.confThreshold;
+            document.getElementById('iouThreshold').value = state.config.iouThreshold;
+            // 恢复图片目录
+            if (state.config.imageDir) {
+                document.getElementById('imageDirInput').value = state.config.imageDir;
+            }
+        }
+
+        // 加载指定的图片目录
+        async function loadImageDir() {
+            const imageDir = document.getElementById('imageDirInput').value.trim();
+            if (!imageDir) {
+                showToast('请输入图片目录路径', 'error');
+                return;
+            }
+
+            state.config.imageDir = imageDir;
+            localStorage.setItem('onnx_demo_config', JSON.stringify(state.config));
+
+            setLoading(true, '正在加载目录...');
+
+            try {
+                // 更新服务端图片目录
+                const configResult = await apiRequest('/api/config', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        image_dir: imageDir
+                    })
+                });
+
+                if (configResult.code === 200) {
+                    await loadFolders();
+                    showToast('目录加载成功', 'success');
+                } else {
+                    showToast(configResult.message || '目录加载失败', 'error');
+                }
+            } catch (error) {
+                showToast('目录加载失败，请检查路径', 'error');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        async function loadAlgorithms() {
+            try {
+                const result = await apiRequest('/api/algorithms');
+                if (result.code === 200) {
+                    state.algorithms = result.data;
+                    const select = document.getElementById('algorithmSelect');
+                    select.innerHTML = '<option value="">-- 选择算法 --</option>';
+                    result.data.forEach(algo => {
+                        const option = document.createElement('option');
+                        option.value = algo.id;
+                        option.dataset.type = algo.type || 'detection';
+                        option.textContent = `${algo.id}. ${algo.name}`;
+                        select.appendChild(option);
+                    });
+
+                    // 添加算法切换事件
+                    select.onchange = function() {
+                        const selectedOption = select.options[select.selectedIndex];
+                        const isChange = selectedOption && selectedOption.dataset.type === 'change_detection';
+                        switchDetectionMode(isChange);
+                    };
+
+                    return true;
+                }
+            } catch (error) {}
+            return false;
+        }
+
+        async function loadFolders() {
+            const folderList = document.getElementById('folderList');
+            folderList.innerHTML = '<div class="placeholder" style="padding: 20px;">加载中...</div>';
+
+            try {
+                const result = await apiRequest('/api/folders');
+                if (result.code === 200 && result.data.length > 0) {
+                    folderList.innerHTML = '';
+                    result.data.forEach(folder => {
+                        const div = document.createElement('div');
+                        div.className = 'folder-item';
+                        div.innerHTML = `
+                            <span class="folder-name">📁 ${folder.name}</span>
+                            <span class="folder-count">${folder.image_count}</span>
+                        `;
+                        div.onclick = (e) => selectFolder(folder, e.currentTarget);
+                        folderList.appendChild(div);
+                    });
+                    return true;
+                } else {
+                    folderList.innerHTML = '<div class="placeholder" style="padding: 20px;">暂无文件夹</div>';
+                }
+            } catch (error) {
+                folderList.innerHTML = '<div class="placeholder" style="padding: 20px;">连接失败</div>';
+            }
+            return false;
+        }
+
+        async function selectFolder(folder, element) {
+            state.currentFolder = folder;
+            state.currentImage = null;
+
+            document.querySelectorAll('.folder-item').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+
+            document.getElementById('imageList').innerHTML = '<div class="placeholder" style="padding: 20px;">加载中...</div>';
+            clearResults();
+
+            try {
+                const result = await apiRequest(`/api/images/${folder.path}`);
+                if (result.code === 200 && result.data.length > 0) {
+                    const imageList = document.getElementById('imageList');
+                    imageList.innerHTML = '';
+                    result.data.forEach(image => {
+                        const div = document.createElement('div');
+                        div.className = 'image-item';
+                        div.innerHTML = `
+                            <img class="image-thumb" src="${getServerUrl()}/api/thumb/${image.path}" alt="${image.name}" loading="lazy">
+                            <div class="image-info">
+                                <span class="image-name">${image.name}</span>
+                                <span class="image-size">${image.size_str}</span>
+                            </div>
+                        `;
+                        div.onclick = (e) => selectImage(image, e.currentTarget);
+                        imageList.appendChild(div);
+                    });
+                } else {
+                    document.getElementById('imageList').innerHTML = '<div class="placeholder" style="padding: 20px;">暂无图片</div>';
+                }
+            } catch (error) {
+                document.getElementById('imageList').innerHTML = '<div class="placeholder" style="padding: 20px;">加载失败</div>';
+            }
+        }
+
+        function selectImage(image, element) {
+            // 变化检测模式下的图片选择
+            if (state.isChangeDetection && state.selectingChangeImage > 0) {
+                const imgNum = state.selectingChangeImage;
+                if (imgNum === 1) {
+                    state.changeImage1 = image;
+                    document.getElementById('changeImage1Wrapper').innerHTML = `
+                        <img src="${getServerUrl()}/api/image/${image.path}" alt="${image.name}">
+                        <span class="selected-indicator">✓ 图片1</span>
+                        <button class="image-select-btn" onclick="selectChangeImage(1)">重新选择</button>
+                    `;
+                } else {
+                    state.changeImage2 = image;
+                    document.getElementById('changeImage2Wrapper').innerHTML = `
+                        <img src="${getServerUrl()}/api/image/${image.path}" alt="${image.name}">
+                        <span class="selected-indicator">✓ 图片2</span>
+                        <button class="image-select-btn" onclick="selectChangeImage(2)">重新选择</button>
+                    `;
+                }
+                state.selectingChangeImage = 0;
+                updateChangeDetectButton();
+                showToast(`已选择图片${imgNum}: ${image.name}`, 'success');
+                return;
+            }
+
+            // 普通检测模式
+            state.currentImage = image;
+
+            document.querySelectorAll('.image-item').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+
+            document.getElementById('originalImageWrapper').innerHTML =
+                `<img src="${getServerUrl()}/api/image/${image.path}" alt="${image.name}">`;
+
+            document.getElementById('resultImageWrapper').innerHTML = `
+                <div class="placeholder">
+                    <div class="placeholder-icon">🎯</div>
+                    <div>点击"开始检测"查看结果</div>
+                </div>
+            `;
+            document.getElementById('resultsSection').style.display = 'none';
+            document.getElementById('detectBtn').disabled = false;
+            document.getElementById('contentTitle').textContent = `当前图片: ${image.name}`;
+        }
+
+        async function runDetection() {
+            const algoId = document.getElementById('algorithmSelect').value;
+            if (!algoId) { showToast('请选择算法', 'error'); return; }
+
+            // 变化检测模式
+            if (state.isChangeDetection) {
+                if (!state.changeImage1 || !state.changeImage2) {
+                    showToast('请选择两张图片', 'error');
+                    return;
+                }
+                await runChangeDetection(algoId);
+                return;
+            }
+
+            // 普通检测模式
+            if (!state.currentImage) { showToast('请选择图片', 'error'); return; }
+
+            const confThreshold = parseFloat(document.getElementById('confThreshold').value) || state.config.confThreshold;
+            const iouThreshold = parseFloat(document.getElementById('iouThreshold').value) || state.config.iouThreshold;
+
+            setLoading(true, '正在检测...');
+
+            try {
+                const result = await apiRequest('/api/detect', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        algorithm_id: parseInt(algoId),
+                        image_path: state.currentImage.path,
+                        conf_threshold: confThreshold,
+                        iou_threshold: iouThreshold
+                    })
+                });
+
+                if (result.code === 200) {
+                    displayResults(result.data);
+                    showToast(`检测完成，发现 ${result.data.total_count} 个目标`, 'success');
+                } else {
+                    showToast(result.message || '检测失败', 'error');
+                }
+            } catch (error) {
+                showToast('检测请求失败', 'error');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        async function runChangeDetection(algoId) {
+            setLoading(true, '正在进行变化检测...');
+
+            try {
+                const result = await apiRequest('/api/detect_change', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        algorithm_id: parseInt(algoId),
+                        image_path1: state.changeImage1.path,
+                        image_path2: state.changeImage2.path
+                    })
+                });
+
+                if (result.code === 200) {
+                    displayChangeResults(result.data);
+                    showToast(`变化检测完成，变化比例: ${result.data.change_ratio}%`, 'success');
+                } else {
+                    showToast(result.message || '检测失败', 'error');
+                }
+            } catch (error) {
+                showToast('检测请求失败', 'error');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        function displayChangeResults(data) {
+            // 显示变化掩码
+            document.getElementById('changeMaskWrapper').innerHTML =
+                `<img src="${data.mask_image}" alt="变化掩码">`;
+
+            // 显示叠加结果
+            document.getElementById('changeResultWrapper').innerHTML =
+                `<img src="${data.result_image}" alt="叠加结果">`;
+
+            // 显示统计信息
+            document.getElementById('changeRatio').textContent = `${data.change_ratio}%`;
+            document.getElementById('changeRatio').className =
+                data.change_ratio > 10 ? 'change-stat-value warning' : 'change-stat-value';
+            document.getElementById('changeDetectTime').textContent = `${(data.detect_time * 1000).toFixed(0)}ms`;
+            document.getElementById('changeImageSize').textContent = `${data.image_width}×${data.image_height}`;
+
+            document.getElementById('changeResultsSection').style.display = 'block';
+            document.getElementById('contentTitle').textContent = `变化检测 - 变化比例: ${data.change_ratio}%`;
+        }
+
+        function displayResults(data) {
+            document.getElementById('resultImageWrapper').innerHTML = `<img src="${data.result_image}" alt="检测结果">`;
+            document.getElementById('detectionCount').textContent = data.total_count;
+            document.getElementById('detectTime').textContent = `${(data.detect_time * 1000).toFixed(0)}ms`;
+
+            const tbody = document.getElementById('resultsBody');
+            tbody.innerHTML = '';
+
+            data.detections.forEach((det, index) => {
+                const tr = document.createElement('tr');
+                const confPercent = (det.confidence * 100).toFixed(1);
+                tr.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td><span class="class-badge">${det.class_name}</span></td>
+                    <td>
+                        <span class="confidence-bar">
+                            <span class="confidence-fill" style="width: ${confPercent}%"></span>
+                        </span>
+                        ${confPercent}%
+                    </td>
+                    <td>(${det.bbox.map(v => v.toFixed(0)).join(', ')})</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('resultsSection').style.display = 'block';
+            document.getElementById('contentTitle').textContent = `${data.algorithm_name} - ${state.currentImage.name}`;
+        }
+
+        function clearResults() {
+            // 普通检测模式清理
+            document.getElementById('originalImageWrapper').innerHTML = `
+                <div class="placeholder"><div class="placeholder-icon">📷</div><div>请从左侧选择图片</div></div>
+            `;
+            document.getElementById('resultImageWrapper').innerHTML = `
+                <div class="placeholder"><div class="placeholder-icon">🎯</div><div>点击"开始检测"查看结果</div></div>
+            `;
+            document.getElementById('resultsSection').style.display = 'none';
+
+            // 变化检测模式清理
+            state.changeImage1 = null;
+            state.changeImage2 = null;
+            state.selectingChangeImage = 0;
+
+            document.getElementById('changeImage1Wrapper').innerHTML = `
+                <div class="placeholder"><div class="placeholder-icon">📷</div><div>点击下方按钮选择图片1</div></div>
+                <button class="image-select-btn" onclick="selectChangeImage(1)">选择图片1</button>
+            `;
+            document.getElementById('changeImage2Wrapper').innerHTML = `
+                <div class="placeholder"><div class="placeholder-icon">📷</div><div>点击下方按钮选择图片2</div></div>
+                <button class="image-select-btn" onclick="selectChangeImage(2)">选择图片2</button>
+            `;
+            document.getElementById('changeMaskWrapper').innerHTML = `
+                <div class="placeholder"><div class="placeholder-icon">🎭</div><div>检测后显示变化区域</div></div>
+            `;
+            document.getElementById('changeResultWrapper').innerHTML = `
+                <div class="placeholder"><div class="placeholder-icon">🎯</div><div>检测后显示叠加结果</div></div>
+            `;
+            document.getElementById('changeResultsSection').style.display = 'none';
+
+            document.getElementById('detectBtn').disabled = true;
+            document.getElementById('contentTitle').textContent = '检测结果';
+        }
+
+        async function refreshData() {
+            state.currentFolder = null;
+            state.currentImage = null;
+            clearResults();
+            document.getElementById('imageList').innerHTML = '<div class="placeholder" style="padding: 20px;">请先选择文件夹</div>';
+
+            setLoading(true, '正在连接服务器...');
+
+            try {
+                // 加载算法列表
+                const algoSuccess = await loadAlgorithms();
+
+                // 如果有保存的图片目录，自动加载
+                if (state.config.imageDir) {
+                    document.getElementById('imageDirInput').value = state.config.imageDir;
+                    await loadFolders();
+                }
+
+                if (algoSuccess) {
+                    updateConnectionStatus(true);
+                    showToast(`已连接到 ${getServerUrl()}`, 'success');
+                } else {
+                    updateConnectionStatus(false);
+                    showToast('连接失败，请检查服务地址', 'error');
+                }
+            } catch (error) {
+                updateConnectionStatus(false);
+                showToast('连接失败', 'error');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('host')) DEFAULT_CONFIG.host = urlParams.get('host');
+            if (urlParams.get('port')) DEFAULT_CONFIG.port = urlParams.get('port');
+            
+            loadSettings();
+            await refreshData();
+            
+            if (!state.connected) showSettings();
+        });
+
+        document.getElementById('settingsModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('settingsModal')) hideSettings();
+        });
+    </script>
+</body>
+</html>

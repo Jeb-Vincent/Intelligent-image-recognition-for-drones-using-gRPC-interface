@@ -1,0 +1,388 @@
+{
+  "code": 200,
+  "message": "success",
+  "algorithm_id": 6,
+  "algorithm_name": "交通拥堵识别",
+  "detect_time": 0.02199999988079071,
+  "total_count": 27,
+  "detections": [
+    {
+      "class_id": 0,
+      "class_name": "vehicle",
+      "class_name_cn": "车辆",
+      "confidence": 0.92041015625,
+      "bbox": [
+        0.6412109732627869,
+        0.9051849842071533,
+        0.6900389790534973,
+        0.9851850271224976
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "vehicle",
+      "class_name_cn": "车辆",
+      "confidence": 0.9072265625,
+      "bbox": [
+        0.5371090173721313,
+        0.29888901114463806,
+        0.5675780177116394,
+        0.3411110043525696
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "vehicle",
+      "class_name_cn": "车辆",
+      "confidence": 0.89892578125,
+      "bbox": [
+        0.5767580270767212,
+        0.7103700041770935,
+        0.6123049855232239,
+        0.7874069809913635
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "vehicle",
+      "class_name_cn": "车辆",
+      "confidence": 0.89501953125,
+      "bbox": [
+        0.10839799791574478,
+        0.2892589867115021,
+        0.20917999744415283,
+        0.36259299516677856
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "vehicle",
+      "class_name_cn": "车辆",
+      "confidence": 0.8916015625,
+      "bbox": [
+        0.7533199787139893,
+        0.24425899982452393,
+        0.7919920086860657,
+        0.29055601358413696
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "vehicle",
+      "class_name_cn": "车辆",
+      "confidence": 0.888671875,
+      "bbox": [
+        0.8203120231628418,
+        0.6607409715652466,
+        0.8656250238418579,
+        0.709630012512207
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "vehicle",
+      "class_name_cn": "车辆",
+      "confidence": 0.88818359375,
+      "bbox": [
+        0.7888669967651367,
+        0.5877779722213745,
+        0.8236330151557922,
+        0.6299999952316284
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "vehicle",
+      "class_name_cn": "车辆",
+      "confidence": 0.88623046875,
+      "bbox": [
+        0.2447270005941391,
+        0.43814799189567566,
+        0.28730499744415283,
+        0.4833329916000366
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "vehicle",
+      "class_name_cn": "车辆",
+      "confidence": 0.8857421875,
+      "bbox": [
+        0.5410159826278687,
+        0.6237040162086487,
+        0.5707030296325684,
+        0.6874070167541504
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "vehicle",
+      "class_name_cn": "车辆",
+      "confidence": 0.884765625,
+      "bbox": [
+        0.8500000238418579,
+        0.7148150205612183,
+        0.8890630006790161,
+        0.757777988910675
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "vehicle",
+      "class_name_cn": "车辆",
+      "confidence": 0.8818359375,
+      "bbox": [
+        0.7718750238418579,
+        0.5551850199699402,
+        0.8140619993209839,
+        0.5974069833755493
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "vehicle",
+      "class_name_cn": "车辆",
+      "confidence": 0.87890625,
+      "bbox": [
+        0.4402340054512024,
+        0.5333330035209656,
+        0.4777339994907379,
+        0.6088889837265015
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "vehicle",
+      "class_name_cn": "车辆",
+      "confidence": 0.87646484375,
+      "bbox": [
+        0.3782230019569397,
+        0.45222198963165283,
+        0.41396498680114746,
+        0.5255560278892517
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "vehicle",
+      "class_name_cn": "车辆",
+      "confidence": 0.875,
+      "bbox": [
+        0.09047900140285492,
+        0.4207409918308258,
+        0.1356929987668991,
+        0.4592590034008026
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "vehicle",
+      "class_name_cn": "车辆",
+      "confidence": 0.86962890625,
+      "bbox": [
+        0.9414060115814209,
+        0.9185190200805664,
+        0.9882810115814209,
+        0.9762960076332092
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "vehicle",
+      "class_name_cn": "车辆",
+      "confidence": 0.8681640625,
+      "bbox": [
+        0.09592299908399582,
+        0.46000000834465027,
+        0.13395999372005463,
+        0.5029630064964294
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "vehicle",
+      "class_name_cn": "车辆",
+      "confidence": 0.86474609375,
+      "bbox": [
+        0.6945310235023499,
+        0.2918519973754883,
+        0.7226560115814209,
+        0.3207409977912903
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "vehicle",
+      "class_name_cn": "车辆",
+      "confidence": 0.861328125,
+      "bbox": [
+        0.5162109732627869,
+        0.5459259748458862,
+        0.5462890267372131,
+        0.6111109852790833
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "vehicle",
+      "class_name_cn": "车辆",
+      "confidence": 0.85498046875,
+      "bbox": [
+        0.8968750238418579,
+        0.3992590010166168,
+        0.9281250238418579,
+        0.4481480121612549
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "vehicle",
+      "class_name_cn": "车辆",
+      "confidence": 0.85400390625,
+      "bbox": [
+        0.53125,
+        0.519258975982666,
+        0.5609380006790161,
+        0.5874069929122925
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "vehicle",
+      "class_name_cn": "车辆",
+      "confidence": 0.8515625,
+      "bbox": [
+        0.9624999761581421,
+        0.35777801275253296,
+        0.996874988079071,
+        0.4037039875984192
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "vehicle",
+      "class_name_cn": "车辆",
+      "confidence": 0.8408203125,
+      "bbox": [
+        0.9316409826278687,
+        0.38666701316833496,
+        0.9652339816093445,
+        0.4325929880142212
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "vehicle",
+      "class_name_cn": "车辆",
+      "confidence": 0.8349609375,
+      "bbox": [
+        0.0,
+        0.34333300590515137,
+        0.01655299961566925,
+        0.3796299993991852
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "vehicle",
+      "class_name_cn": "车辆",
+      "confidence": 0.82421875,
+      "bbox": [
+        0.9101560115814209,
+        0.38888901472091675,
+        0.947655975818634,
+        0.44074100255966187
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "vehicle",
+      "class_name_cn": "车辆",
+      "confidence": 0.82421875,
+      "bbox": [
+        0.650780975818634,
+        0.0,
+        0.6765620112419128,
+        0.01962999999523163
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "vehicle",
+      "class_name_cn": "车辆",
+      "confidence": 0.810546875,
+      "bbox": [
+        0.9617189764976501,
+        0.16907399892807007,
+        0.9835940003395081,
+        0.19092600047588348
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "vehicle",
+      "class_name_cn": "车辆",
+      "confidence": 0.61669921875,
+      "bbox": [
+        0.9808589816093445,
+        0.35148099064826965,
+        1.0,
+        0.3981480002403259
+      ],
+      "plate_number": null,
+      "plate_type": null
+    }
+  ]
+}

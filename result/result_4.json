@@ -1,0 +1,192 @@
+{
+  "code": 200,
+  "message": "success",
+  "algorithm_id": 4,
+  "algorithm_name": "游泳涉水识别",
+  "detect_time": 0.017999999225139618,
+  "total_count": 13,
+  "detections": [
+    {
+      "class_id": 2,
+      "class_name": "boat",
+      "class_name_cn": "船",
+      "confidence": 0.9546117782592773,
+      "bbox": [
+        0.5351319909095764,
+        0.6554380059242249,
+        0.5711179971694946,
+        0.6814280152320862
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 2,
+      "class_name": "boat",
+      "class_name_cn": "船",
+      "confidence": 0.9438748359680176,
+      "bbox": [
+        0.8697509765625,
+        0.4236930012702942,
+        0.9005619883537292,
+        0.46411800384521484
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 2,
+      "class_name": "boat",
+      "class_name_cn": "船",
+      "confidence": 0.93798828125,
+      "bbox": [
+        0.7624760270118713,
+        0.5471580028533936,
+        0.7898679971694946,
+        0.5888699889183044
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 2,
+      "class_name": "boat",
+      "class_name_cn": "船",
+      "confidence": 0.9245295524597168,
+      "bbox": [
+        0.37601301074028015,
+        0.4001010060310364,
+        0.4122680127620697,
+        0.42179399728775024
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "swimmer",
+      "class_name_cn": "游泳者",
+      "confidence": 0.8126821517944336,
+      "bbox": [
+        0.5663449764251709,
+        0.4854939877986908,
+        0.5797489881515503,
+        0.49810299277305603
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "swimmer",
+      "class_name_cn": "游泳者",
+      "confidence": 0.8091459274291992,
+      "bbox": [
+        0.38315099477767944,
+        0.4517189860343933,
+        0.3910680115222931,
+        0.4731709957122803
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "swimmer",
+      "class_name_cn": "游泳者",
+      "confidence": 0.80078125,
+      "bbox": [
+        0.41964098811149597,
+        0.4322499930858612,
+        0.4311400055885315,
+        0.44526201486587524
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "swimmer",
+      "class_name_cn": "游泳者",
+      "confidence": 0.7939453125,
+      "bbox": [
+        0.5998749732971191,
+        0.5199369788169861,
+        0.6102809906005859,
+        0.5316359996795654
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "swimmer",
+      "class_name_cn": "游泳者",
+      "confidence": 0.7496337890625,
+      "bbox": [
+        0.6065369844436646,
+        0.5976330041885376,
+        0.6176819801330566,
+        0.6094610095024109
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "swimmer",
+      "class_name_cn": "游泳者",
+      "confidence": 0.7478041648864746,
+      "bbox": [
+        0.5125460028648376,
+        0.48439499735832214,
+        0.5233920216560364,
+        0.504351019859314
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "swimmer",
+      "class_name_cn": "游泳者",
+      "confidence": 0.74462890625,
+      "bbox": [
+        0.6973509788513184,
+        0.49954700469970703,
+        0.7057740092277527,
+        0.5118579864501953
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "swimmer",
+      "class_name_cn": "游泳者",
+      "confidence": 0.7198631763458252,
+      "bbox": [
+        0.6445220112800598,
+        0.5766239762306213,
+        0.6562590003013611,
+        0.5903030037879944
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "swimmer",
+      "class_name_cn": "游泳者",
+      "confidence": 0.703125,
+      "bbox": [
+        0.5963780283927917,
+        0.4339280128479004,
+        0.6083099842071533,
+        0.44564399123191833
+      ],
+      "plate_number": null,
+      "plate_type": null
+    }
+  ]
+}

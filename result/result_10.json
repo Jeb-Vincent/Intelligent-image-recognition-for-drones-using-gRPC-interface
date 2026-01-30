@@ -1,0 +1,66 @@
+{
+  "code": 200,
+  "message": "success",
+  "algorithm_id": 10,
+  "algorithm_name": "非法垂钓识别",
+  "detect_time": 0.027000000700354576,
+  "total_count": 4,
+  "detections": [
+    {
+      "class_id": 3,
+      "class_name": "boat",
+      "class_name_cn": "船",
+      "confidence": 0.90966796875,
+      "bbox": [
+        0.029934000223875046,
+        0.10462000221014023,
+        0.17828600108623505,
+        0.31612300872802734
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 2,
+      "class_name": "DiaoYuSan",
+      "class_name_cn": "钓鱼伞",
+      "confidence": 0.8818359375,
+      "bbox": [
+        0.37415099143981934,
+        0.5002260208129883,
+        0.46552300453186035,
+        0.6139039993286133
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "ShuiBianDiaoYu",
+      "class_name_cn": "水边钓鱼",
+      "confidence": 0.87890625,
+      "bbox": [
+        0.6168479919433594,
+        0.5609149932861328,
+        0.6820650100708008,
+        0.6347370147705078
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "ShuiBianDiaoYu",
+      "class_name_cn": "水边钓鱼",
+      "confidence": 0.87060546875,
+      "bbox": [
+        0.6956520080566406,
+        0.7744569778442383,
+        0.7445650100708008,
+        0.8577899932861328
+      ],
+      "plate_number": null,
+      "plate_type": null
+    }
+  ]
+}

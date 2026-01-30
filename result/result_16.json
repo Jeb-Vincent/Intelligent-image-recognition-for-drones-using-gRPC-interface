@@ -1,0 +1,346 @@
+{
+  "code": 200,
+  "message": "success",
+  "algorithm_id": 16,
+  "algorithm_name": "裸土未覆盖识别",
+  "detect_time": 0.02800000086426735,
+  "total_count": 24,
+  "detections": [
+    {
+      "class_id": 0,
+      "class_name": "trash",
+      "class_name_cn": "垃圾",
+      "confidence": 0.8193359375,
+      "bbox": [
+        0.5827109813690186,
+        0.14130400121212006,
+        0.63332200050354,
+        0.1926330029964447
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "trash",
+      "class_name_cn": "垃圾",
+      "confidence": 0.80859375,
+      "bbox": [
+        0.7146739959716797,
+        0.33363500237464905,
+        0.7595109939575195,
+        0.4320650100708008
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "trash",
+      "class_name_cn": "垃圾",
+      "confidence": 0.79638671875,
+      "bbox": [
+        0.6980299949645996,
+        0.6334540247917175,
+        0.7231659889221191,
+        0.6853860020637512
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "trash",
+      "class_name_cn": "垃圾",
+      "confidence": 0.79248046875,
+      "bbox": [
+        0.734375,
+        0.5416669845581055,
+        0.7697010040283203,
+        0.6962559819221497
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "trash",
+      "class_name_cn": "垃圾",
+      "confidence": 0.7900390625,
+      "bbox": [
+        0.5305709838867188,
+        0.7161840200424194,
+        0.5686140060424805,
+        0.756039023399353
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "trash",
+      "class_name_cn": "垃圾",
+      "confidence": 0.779296875,
+      "bbox": [
+        0.7299590110778809,
+        0.4532009959220886,
+        0.7754759788513184,
+        0.5371379852294922
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "trash",
+      "class_name_cn": "垃圾",
+      "confidence": 0.7080078125,
+      "bbox": [
+        0.6317930221557617,
+        0.7285630106925964,
+        0.6514949798583984,
+        0.7786840200424194
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "trash",
+      "class_name_cn": "垃圾",
+      "confidence": 0.70654296875,
+      "bbox": [
+        0.6542119979858398,
+        0.1177539974451065,
+        0.703125,
+        0.15640099346637726
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "bare_soil",
+      "class_name_cn": "裸土",
+      "confidence": 0.69775390625,
+      "bbox": [
+        0.6107339859008789,
+        0.03804299980401993,
+        0.6976900100708008,
+        0.0851449966430664
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "trash",
+      "class_name_cn": "垃圾",
+      "confidence": 0.68017578125,
+      "bbox": [
+        0.6914060115814209,
+        0.25120800733566284,
+        0.7162020206451416,
+        0.3671500086784363
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "trash",
+      "class_name_cn": "垃圾",
+      "confidence": 0.66455078125,
+      "bbox": [
+        0.27301299571990967,
+        0.3756040036678314,
+        0.2928839921951294,
+        0.4178740084171295
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "trash",
+      "class_name_cn": "垃圾",
+      "confidence": 0.64501953125,
+      "bbox": [
+        0.3125,
+        0.2608700096607208,
+        0.34205201268196106,
+        0.2874400019645691
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "trash",
+      "class_name_cn": "垃圾",
+      "confidence": 0.6396484375,
+      "bbox": [
+        0.645550012588501,
+        0.6216790080070496,
+        0.6751019954681396,
+        0.6778380274772644
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "bare_soil",
+      "class_name_cn": "裸土",
+      "confidence": 0.60595703125,
+      "bbox": [
+        0.171875,
+        0.010417000390589237,
+        0.1939540058374405,
+        0.22750599682331085
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "trash",
+      "class_name_cn": "垃圾",
+      "confidence": 0.60107421875,
+      "bbox": [
+        0.27768298983573914,
+        0.27143698930740356,
+        0.2984040081501007,
+        0.30102699995040894
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "bare_soil",
+      "class_name_cn": "裸土",
+      "confidence": 0.55810546875,
+      "bbox": [
+        0.5100200176239014,
+        0.004226999823004007,
+        0.5742189884185791,
+        0.031401000916957855
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "trash",
+      "class_name_cn": "垃圾",
+      "confidence": 0.5009765625,
+      "bbox": [
+        0.41593098640441895,
+        0.24124400317668915,
+        0.4468410015106201,
+        0.26358699798583984
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "trash",
+      "class_name_cn": "垃圾",
+      "confidence": 0.450439453125,
+      "bbox": [
+        0.5962979793548584,
+        0.6400970220565796,
+        0.6292459964752197,
+        0.66908198595047
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "bare_soil",
+      "class_name_cn": "裸土",
+      "confidence": 0.406494140625,
+      "bbox": [
+        0.17510199546813965,
+        0.005284000188112259,
+        0.2121260017156601,
+        0.04423300176858902
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "trash",
+      "class_name_cn": "垃圾",
+      "confidence": 0.401611328125,
+      "bbox": [
+        0.42000699043273926,
+        0.2798910140991211,
+        0.4400480091571808,
+        0.2998189926147461
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "bare_soil",
+      "class_name_cn": "裸土",
+      "confidence": 0.359375,
+      "bbox": [
+        0.5123980045318604,
+        0.0036230001132935286,
+        0.6302649974822998,
+        0.035023998469114304
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "trash",
+      "class_name_cn": "垃圾",
+      "confidence": 0.3408203125,
+      "bbox": [
+        0.7194290161132812,
+        0.19444400072097778,
+        0.7425270080566406,
+        0.24637700617313385
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "bare_soil",
+      "class_name_cn": "裸土",
+      "confidence": 0.30908203125,
+      "bbox": [
+        0.6304349899291992,
+        0.0,
+        0.6983699798583984,
+        0.019474999979138374
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "trash",
+      "class_name_cn": "垃圾",
+      "confidence": 0.276611328125,
+      "bbox": [
+        0.3738110065460205,
+        0.2551330029964447,
+        0.39249300956726074,
+        0.27385300397872925
+      ],
+      "plate_number": null,
+      "plate_type": null
+    }
+  ]
+}

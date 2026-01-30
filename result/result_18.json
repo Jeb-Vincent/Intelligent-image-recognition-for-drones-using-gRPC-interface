@@ -1,0 +1,108 @@
+{
+  "code": 200,
+  "message": "success",
+  "algorithm_id": 18,
+  "algorithm_name": "烟火识别",
+  "detect_time": 0.026000000536441803,
+  "total_count": 7,
+  "detections": [
+    {
+      "class_id": 0,
+      "class_name": "smoke",
+      "class_name_cn": "烟雾",
+      "confidence": 0.92822265625,
+      "bbox": [
+        0.0,
+        0.007201000116765499,
+        0.8247280120849609,
+        0.9877489805221558
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "fire",
+      "class_name_cn": "火",
+      "confidence": 0.75634765625,
+      "bbox": [
+        0.5348169803619385,
+        0.4815729856491089,
+        0.7328460216522217,
+        0.5769870281219482
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "fire",
+      "class_name_cn": "火",
+      "confidence": 0.6806640625,
+      "bbox": [
+        0.1759510040283203,
+        0.4098620116710663,
+        0.4894700050354004,
+        0.5442820191383362
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "fire",
+      "class_name_cn": "火",
+      "confidence": 0.5517578125,
+      "bbox": [
+        0.7860050201416016,
+        0.3933590054512024,
+        0.8158969879150391,
+        0.4419670104980469
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "fire",
+      "class_name_cn": "火",
+      "confidence": 0.403564453125,
+      "bbox": [
+        0.7452449798583984,
+        0.4485679864883423,
+        0.7832880020141602,
+        0.5115770101547241
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "fire",
+      "class_name_cn": "火",
+      "confidence": 0.302490234375,
+      "bbox": [
+        0.20906899869441986,
+        0.21183200180530548,
+        0.23250700533390045,
+        0.23463499546051025
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "fire",
+      "class_name_cn": "火",
+      "confidence": 0.2783203125,
+      "bbox": [
+        0.27666398882865906,
+        0.09586399793624878,
+        0.29228898882865906,
+        0.13097000122070312
+      ],
+      "plate_number": null,
+      "plate_type": null
+    }
+  ]
+}

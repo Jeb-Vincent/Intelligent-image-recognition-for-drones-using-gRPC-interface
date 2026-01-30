@@ -1,0 +1,346 @@
+{
+  "code": 200,
+  "message": "success",
+  "algorithm_id": 9,
+  "algorithm_name": "人群聚集识别",
+  "detect_time": 0.017000000923871994,
+  "total_count": 24,
+  "detections": [
+    {
+      "class_id": 0,
+      "class_name": "car",
+      "class_name_cn": "车",
+      "confidence": 0.943901538848877,
+      "bbox": [
+        0.7737789750099182,
+        0.6403650045394897,
+        0.9449710249900818,
+        0.7825520038604736
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "car",
+      "class_name_cn": "车",
+      "confidence": 0.9389944076538086,
+      "bbox": [
+        0.22116699814796448,
+        0.5874999761581421,
+        0.3081299960613251,
+        0.7760419845581055
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "car",
+      "class_name_cn": "车",
+      "confidence": 0.9307308197021484,
+      "bbox": [
+        0.38344699144363403,
+        0.5699869990348816,
+        0.46342799067497253,
+        0.7685549855232239
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "car",
+      "class_name_cn": "车",
+      "confidence": 0.9237546920776367,
+      "bbox": [
+        0.47695299983024597,
+        0.5415359735488892,
+        0.5519530177116394,
+        0.7105469703674316
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "car",
+      "class_name_cn": "车",
+      "confidence": 0.9224381446838379,
+      "bbox": [
+        0.04360400140285492,
+        0.7752599716186523,
+        0.18784199655056,
+        0.9591150283813477
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "car",
+      "class_name_cn": "车",
+      "confidence": 0.9214625358581543,
+      "bbox": [
+        0.3327150046825409,
+        0.006380000151693821,
+        0.3965820074081421,
+        0.18945300579071045
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "car",
+      "class_name_cn": "车",
+      "confidence": 0.920037031173706,
+      "bbox": [
+        0.5417479872703552,
+        0.6484379768371582,
+        0.6184080243110657,
+        0.8515620231628418
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "car",
+      "class_name_cn": "车",
+      "confidence": 0.9180479049682617,
+      "bbox": [
+        0.26718801259994507,
+        0.8494139909744263,
+        0.4207029938697815,
+        0.9495440125465393
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "car",
+      "class_name_cn": "车",
+      "confidence": 0.9156088829040527,
+      "bbox": [
+        0.47053200006484985,
+        0.24791699647903442,
+        0.5364990234375,
+        0.43177101016044617
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "car",
+      "class_name_cn": "车",
+      "confidence": 0.9107732772827148,
+      "bbox": [
+        0.6008300185203552,
+        0.46914100646972656,
+        0.7343260049819946,
+        0.6402339935302734
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "car",
+      "class_name_cn": "车",
+      "confidence": 0.871706485748291,
+      "bbox": [
+        0.49604499340057373,
+        0.007031000219285488,
+        0.5531740188598633,
+        0.16640600562095642
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "car",
+      "class_name_cn": "车",
+      "confidence": 0.8359682559967041,
+      "bbox": [
+        0.08894000202417374,
+        0.0,
+        0.15305200219154358,
+        0.10188800096511841
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "car",
+      "class_name_cn": "车",
+      "confidence": 0.8278040885925293,
+      "bbox": [
+        0.00024399999529123306,
+        0.6162109971046448,
+        0.07182600349187851,
+        0.7067059874534607
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "car",
+      "class_name_cn": "车",
+      "confidence": 0.778048038482666,
+      "bbox": [
+        0.018213000148534775,
+        0.540332019329071,
+        0.15424799919128418,
+        0.6242510080337524
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "people",
+      "class_name_cn": "人",
+      "confidence": 0.7508080005645752,
+      "bbox": [
+        0.7034549713134766,
+        0.24521499872207642,
+        0.7356079816818237,
+        0.2860350012779236
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "people",
+      "class_name_cn": "人",
+      "confidence": 0.7501070499420166,
+      "bbox": [
+        0.8307979702949524,
+        0.36844098567962646,
+        0.8629519939422607,
+        0.40239301323890686
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "people",
+      "class_name_cn": "人",
+      "confidence": 0.6809506416320801,
+      "bbox": [
+        0.6992430090904236,
+        0.42145198583602905,
+        0.7288820147514343,
+        0.4650070071220398
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "people",
+      "class_name_cn": "人",
+      "confidence": 0.5875396728515625,
+      "bbox": [
+        0.3265810012817383,
+        0.3070310056209564,
+        0.3452939987182617,
+        0.346094012260437
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "people",
+      "class_name_cn": "人",
+      "confidence": 0.5456318855285645,
+      "bbox": [
+        0.19185799360275269,
+        0.5026199817657471,
+        0.2171259969472885,
+        0.5307130217552185
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "car",
+      "class_name_cn": "车",
+      "confidence": 0.47765350341796875,
+      "bbox": [
+        0.21118199825286865,
+        0.03658900037407875,
+        0.3177250027656555,
+        0.33007800579071045
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "people",
+      "class_name_cn": "人",
+      "confidence": 0.44974184036254883,
+      "bbox": [
+        0.8261169791221619,
+        0.2284179925918579,
+        0.8473209738731384,
+        0.2627280056476593
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "car",
+      "class_name_cn": "车",
+      "confidence": 0.3000469207763672,
+      "bbox": [
+        0.5886229872703552,
+        0.06608100235462189,
+        0.6551269888877869,
+        0.25058600306510925
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "people",
+      "class_name_cn": "人",
+      "confidence": 0.2640169858932495,
+      "bbox": [
+        0.8317869901657104,
+        0.4290040135383606,
+        0.8588380217552185,
+        0.4616209864616394
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "people",
+      "class_name_cn": "人",
+      "confidence": 0.25353431701660156,
+      "bbox": [
+        0.8146610260009766,
+        0.49280598759651184,
+        0.8384640216827393,
+        0.5342770218849182
+      ],
+      "plate_number": null,
+      "plate_type": null
+    }
+  ]
+}

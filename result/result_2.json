@@ -1,0 +1,164 @@
+{
+  "code": 200,
+  "message": "success",
+  "algorithm_id": 2,
+  "algorithm_name": "河道淤积识别",
+  "detect_time": 0.019999999552965164,
+  "total_count": 11,
+  "detections": [
+    {
+      "class_id": 2,
+      "class_name": "abandonedships",
+      "class_name_cn": "废弃船只",
+      "confidence": 0.6585502624511719,
+      "bbox": [
+        0.6764159798622131,
+        0.17189699411392212,
+        0.770458996295929,
+        0.25449201464653015
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "floatingdebris",
+      "class_name_cn": "漂浮碎片",
+      "confidence": 0.6296281814575195,
+      "bbox": [
+        0.4797849953174591,
+        0.023785000666975975,
+        0.6795899868011475,
+        0.5053820013999939
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "floatingdebris",
+      "class_name_cn": "漂浮碎片",
+      "confidence": 0.6076593399047852,
+      "bbox": [
+        0.704541027545929,
+        0.6565099954605103,
+        0.8462399840354919,
+        0.810155987739563
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "floatingdebris",
+      "class_name_cn": "漂浮碎片",
+      "confidence": 0.5509495735168457,
+      "bbox": [
+        0.7764040231704712,
+        0.7850260138511658,
+        0.8204709887504578,
+        0.9080299735069275
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "floatingdebris",
+      "class_name_cn": "漂浮碎片",
+      "confidence": 0.4318721294403076,
+      "bbox": [
+        0.012304999865591526,
+        0.7957469820976257,
+        0.42128899693489075,
+        1.0
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 2,
+      "class_name": "abandonedships",
+      "class_name_cn": "废弃船只",
+      "confidence": 0.40720653533935547,
+      "bbox": [
+        0.9818180203437805,
+        0.8439670205116272,
+        0.9978700280189514,
+        0.8893659710884094
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "floatingdebris",
+      "class_name_cn": "漂浮碎片",
+      "confidence": 0.4011998176574707,
+      "bbox": [
+        0.7443360090255737,
+        0.0319879986345768,
+        0.8619139790534973,
+        0.1437070071697235
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "waterpollution",
+      "class_name_cn": "水污染",
+      "confidence": 0.37147462368011475,
+      "bbox": [
+        0.0,
+        0.10659699887037277,
+        0.6818360090255737,
+        0.8531249761581421
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 2,
+      "class_name": "abandonedships",
+      "class_name_cn": "废弃船只",
+      "confidence": 0.36385560035705566,
+      "bbox": [
+        0.8247619867324829,
+        0.8888779878616333,
+        0.8439880013465881,
+        0.9180660247802734
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 2,
+      "class_name": "abandonedships",
+      "class_name_cn": "废弃船只",
+      "confidence": 0.33917999267578125,
+      "bbox": [
+        0.7278559803962708,
+        0.003536999924108386,
+        0.7424560189247131,
+        0.05618499964475632
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 1,
+      "class_name": "floatingdebris",
+      "class_name_cn": "漂浮碎片",
+      "confidence": 0.26671886444091797,
+      "bbox": [
+        0.623511016368866,
+        0.0053820000030100346,
+        0.704613983631134,
+        0.12933999300003052
+      ],
+      "plate_number": null,
+      "plate_type": null
+    }
+  ]
+}

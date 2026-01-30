@@ -1,0 +1,94 @@
+{
+  "code": 200,
+  "message": "success",
+  "algorithm_id": 23,
+  "algorithm_name": "作物倒伏检测",
+  "detect_time": 0.013000000268220901,
+  "total_count": 6,
+  "detections": [
+    {
+      "class_id": 0,
+      "class_name": "Lodged",
+      "class_name_cn": "作物倒伏",
+      "confidence": 0.94921875,
+      "bbox": [
+        0.4979979991912842,
+        0.07299800217151642,
+        0.5980960130691528,
+        0.2066890001296997
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "Lodged",
+      "class_name_cn": "作物倒伏",
+      "confidence": 0.92236328125,
+      "bbox": [
+        0.04956100136041641,
+        0.653124988079071,
+        0.2275879979133606,
+        0.7773439884185791
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "Lodged",
+      "class_name_cn": "作物倒伏",
+      "confidence": 0.921875,
+      "bbox": [
+        0.5128909945487976,
+        0.6126949787139893,
+        0.6238279938697815,
+        0.7685549855232239
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "Lodged",
+      "class_name_cn": "作物倒伏",
+      "confidence": 0.90380859375,
+      "bbox": [
+        0.40512698888778687,
+        0.27304700016975403,
+        0.5276859998703003,
+        0.41367200016975403
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "Lodged",
+      "class_name_cn": "作物倒伏",
+      "confidence": 0.7880859375,
+      "bbox": [
+        0.8771479725837708,
+        0.25146499276161194,
+        0.9962890148162842,
+        0.5579100251197815
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "Lodged",
+      "class_name_cn": "作物倒伏",
+      "confidence": 0.734375,
+      "bbox": [
+        0.8516110181808472,
+        0.8976070284843445,
+        0.9983890056610107,
+        0.9992679953575134
+      ],
+      "plate_number": null,
+      "plate_type": null
+    }
+  ]
+}

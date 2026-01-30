@@ -1,0 +1,66 @@
+{
+  "code": 200,
+  "message": "success",
+  "algorithm_id": 17,
+  "algorithm_name": "建控区违建识别",
+  "detect_time": 0.01600000075995922,
+  "total_count": 4,
+  "detections": [
+    {
+      "class_id": 1,
+      "class_name": "others",
+      "class_name_cn": "其他违建",
+      "confidence": 0.900853157043457,
+      "bbox": [
+        0.18168899416923523,
+        0.6970490217208862,
+        0.2597169876098633,
+        0.7598959803581238
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "blue_canopy",
+      "class_name_cn": "蓝色天篷",
+      "confidence": 0.8534002304077148,
+      "bbox": [
+        0.3958980143070221,
+        0.29166701436042786,
+        0.6041020154953003,
+        0.7902780175209045
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "blue_canopy",
+      "class_name_cn": "蓝色天篷",
+      "confidence": 0.7879352569580078,
+      "bbox": [
+        0.6527829766273499,
+        0.5793190002441406,
+        0.7144039869308472,
+        0.6526259779930115
+      ],
+      "plate_number": null,
+      "plate_type": null
+    },
+    {
+      "class_id": 0,
+      "class_name": "blue_canopy",
+      "class_name_cn": "蓝色天篷",
+      "confidence": 0.2893054485321045,
+      "bbox": [
+        0.5880370140075684,
+        0.21357400715351105,
+        0.6486819982528687,
+        0.2496200054883957
+      ],
+      "plate_number": null,
+      "plate_type": null
+    }
+  ]
+}
